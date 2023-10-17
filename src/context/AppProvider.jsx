@@ -10,6 +10,8 @@ import {
   SETUP_USER_ERROR,
   GET_FORMATIONS_BEGIN,
   GET_FORMATIONS_SUCCESS,
+  GET_ATTESTATIONS_BEGIN,
+  GET_ATTESTATIONS_SUCCESS,
 } from './actions'
 import { initialState, AppContext } from './appContext'
 
@@ -18,7 +20,8 @@ const AppProvider = ({ children }) => {
 
   // axios
   const authFetch = axios.create({
-    baseURL: 'https://www.app.tunitech-engineering.com',
+   // baseURL: 'https://www.app.tunitech-engineering.com',
+    baseURL: 'http://127.0.0.1:8000/',
   })
   // request
   // response
@@ -45,7 +48,7 @@ const AppProvider = ({ children }) => {
       dispatch({ type: CLEAR_ALERT })
     }, 3000)
   }
-
+  // user Login 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
     try {
@@ -65,6 +68,7 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  // user Logout 
   const logoutUser = async () => {
     await authFetch.get('/logout')
     dispatch({ type: LOGOUT_USER })
@@ -77,6 +81,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES })
   }
 
+
+  // get Formations
   const getFormations = async () => {
     // const { page, search, searchStatus, searchType, sort } = state
     // let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
@@ -112,6 +118,42 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  // get Attestations
+
+  const getAttestations = async () => {
+    // const { page, search, searchStatus, searchType, sort } = state
+    // let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+    // if (search) {
+    //   url = url + `&search=${search}`
+    // }
+    let url = `api/attestaions`
+
+    dispatch({ type: GET_ATTESTATIONS_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+
+      res = { data, totalItems, pagesCount }
+
+      console.log(res)
+      const { attestations, totalAttestations, numOfPages } = {
+        data,
+        totalItems,
+        pagesCount,
+      }
+
+      dispatch({
+        type: GET_ATTESTATIONS_SUCCESS,
+        payload: {
+          attestations,
+          totalAttestations,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
   return (
     <AppContext.Provider
       value={{
@@ -123,6 +165,7 @@ const AppProvider = ({ children }) => {
         clearValues,
         setupUser,
         getFormations,
+        getAttestations
       }}
     >
       {children}

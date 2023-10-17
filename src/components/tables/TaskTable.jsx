@@ -1,51 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { taskData } from '../../data/Data';
-import { DigiContext } from '../../context/DigiContext';
-import { Form } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+//import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import PaginationSection from './PaginationSection';
-import { Link } from 'react-router-dom';
+import { useAppContext } from '../../context/appContext'
 
 const TaskTable = () => {
-  const { handleShow, handleViewTaskModalShow } = useContext(DigiContext);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage] = useState(10);
-  const [dataList, setDataList] = useState(taskData);
-  
-  const handleDelete = (id) => {
-    setDataList((prevData) => prevData.filter((data) => data.id !== id));
-  };
-  
-  // Pagination logic
-  const indexOfLastData = currentPage * dataPerPage;
-  const indexOfFirstData = indexOfLastData - dataPerPage;
-  const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
-  
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-  
-  // Calculate total number of pages
-  const totalPages = Math.ceil(dataList.length / dataPerPage);
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-  
-  const handleStatusChange = (index, value) => {
-    const dataIndex = indexOfFirstData + index;
-    const updatedData = [...dataList];
-    updatedData[dataIndex].status = value;
-    setDataList(updatedData);
-  };
-  
-  const handlePriorityChange = (index, value) => {
-    const dataIndex = indexOfFirstData + index;
-    const updatedData = [...dataList];
-    updatedData[dataIndex].priority = value;
-    setDataList(updatedData);
-  };
-  
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');  // Ajoute un zéro devant si nécessaire
+        const day = date.getDate().toString().padStart(2, '0');  // Ajoute un zéro devant si nécessaire
+        return `${day}-${month}-${year}`;
+    };
+    const { attestations, getAttestations } = useAppContext();
+
+    useEffect(() => {
+        getAttestations()
+    }, []);
+
   return (
     <>
     <OverlayScrollbarsComponent>
@@ -57,77 +28,72 @@ const TaskTable = () => {
                             <input className="form-check-input" type="checkbox" id="markAllLeads"/>
                         </div>
                     </th>
-                    <th>Name</th>
+                 
+                    <th>Client</th>
+                    <th>User</th>
+                    <th>Modules</th>
+                    <th>Credit</th>
+                    <th>Date</th>
                     <th>Status</th>
-                    <th>Start Date</th>
-                    <th>Due Date</th>
-                    <th>Assigned To</th>
-                    <th>Priority</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-            {currentData.map((data, index) => (
-            <tr key={data.id}>
-                <td>
-                <div className="form-check">
-                    <input className="form-check-input" type="checkbox" />
-                </div>
-                </td>
-                <td>
-                <Link
-                    role="button"
-                    className="text-decoration-underline"
-                    data-bs-toggle="modal"
-                    data-bs-target="#viewTaskModal"
-                    onClick={handleViewTaskModalShow}
-                >
-                    {data.taskName}
-                </Link>
-                </td>
-                <td>
-                <Form.Select
-                    className="form-control form-control-sm"
-                    value={data.status}
-                    onChange={(e) => handleStatusChange(index, e.target.value)}
-                >
-                    <option value="not-started">Not Started</option>
-                    <option value="pending">Pending</option>
-                    <option value="on-hold">On Hold</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                </Form.Select>
-                </td>
-                <td>{data.startDate}</td>
-                <td>{data.dueDate}</td>
-                <td>
-                <div className="avatar-box">{data.assignedTo}</div>
-                </td>
-                <td>
-                <Form.Select
-                    className="form-control form-control-sm"
-                    value={data.priority}
-                    onChange={(e) => handlePriorityChange(index, e.target.value)}
-                >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="urgent">Urgent</option>
-                </Form.Select>
-                </td>
+            {attestations.map(
+                  ({
+                    id,
+                    client,
+                    user,
+                    modules,
+                    credit,
+                    dateFormations,
+                    etat,
+                  
+                  }) => ( 
+                    <tr key={id}>
+                      <td>{id}</td>
+                      <td>{client}</td>
+                      <td>{user}</td>
+                      <td>
+                        {modules.map((module, index) => (
+                          <div key={index}>{module.length > 80 ? module.slice(0, 70) + '...' : module}</div>
+                        ))}
+                    </td>
+                       <td>{credit}</td>
+                      <td>30-{dateFormations}</td>
+                      <td>
+                      {etat === 1 ? 
+                        <span className="badge bg-success">Telécharger</span> 
+                        : 
+                        <span className="badge bg-secondary">Generer</span>
+                         }
+                        </td>
                 <td>
                 <div className="btn-box">
+                {etat === 1 ? 
+                <a className="btn btn-sm btn-icon btn-info"
+                    href="http://127.0.0.1:8000/api/generate/attestation/'.{id}.'" target='_blanck'
+                >
+                    <i className="fa-light fa-print" style={{color: 'white'}}></i> 
+                </a>:  <a 
+            className="btn btn-sm btn-icon btn-default"
+            href={`http://127.0.0.1:8000/api/generate/attestation/${id}`} 
+            target='_blank'
+            rel='noopener noreferrer'
+        >
+                    <i className="fa-light fa-print" style={{color: 'white'}}></i> 
+                </a>}
                     <button
                     className="btn btn-sm btn-icon btn-primary"
-                    onClick={handleShow}
+                  
                     data-bs-toggle="modal"
                     data-bs-target="#editTaskModal"
                     >
+                        
                     <i className="fa-light fa-edit"></i>
                     </button>
                     <button
                     className="btn btn-sm btn-icon btn-danger"
-                    onClick={handleDelete}
                     >
                     <i className="fa-light fa-trash-can"></i>
                     </button>
@@ -139,7 +105,7 @@ const TaskTable = () => {
             </tbody>
         </table>
     </OverlayScrollbarsComponent>
-    <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} pageNumbers={pageNumbers}/>
+
     </>
   )
 }

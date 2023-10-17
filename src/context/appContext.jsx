@@ -10,6 +10,7 @@ import {
   SETUP_USER_ERROR,
   GET_FORMATIONS_BEGIN,
   GET_FORMATIONS_SUCCESS,
+  GET_ATTESTATIONS_BEGIN,GET_ATTESTATIONS_SUCCESS
 } from './actions'
 
 const initialState = {
@@ -19,6 +20,8 @@ const initialState = {
   alertType: '',
   formations: [],
   totalFormations: 0,
+  attestations: [],
+  totalAttestations: 0,
   page: 1,
   numOfPages: 1,
 }
@@ -30,7 +33,8 @@ const AppProvider = ({ children }) => {
 
   // axios
   const authFetch = axios.create({
-    baseURL: 'https://www.app.tunitech-engineering.com',
+    //baseURL: 'https://www.app.tunitech-engineering.com',
+    baseURL: 'http://127.0.0.1:8000/',
   })
   // request
 
@@ -61,23 +65,26 @@ const AppProvider = ({ children }) => {
   }
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
-    dispatch({ type: SETUP_USER_BEGIN })
+    dispatch({ type: SETUP_USER_BEGIN });
     try {
-      const { data } = await authFetch.post(`${endPoint}`, currentUser)
+        const { data } = await authFetch.post(`${endPoint}`, currentUser);
 
-      const { user } = data
-      dispatch({
-        type: SETUP_USER_SUCCESS,
-        payload: { user, alertText },
-      })
+        const { user } = data;
+        dispatch({
+            type: SETUP_USER_SUCCESS,
+            payload: { user, alertText },
+        });
+        
+        window.location.href = "/application";  // Redirecting to '/application'
+
     } catch (error) {
-      dispatch({
-        type: SETUP_USER_ERROR,
-        payload: { msg: error.response.data.msg },
-      })
+        dispatch({
+            type: SETUP_USER_ERROR,
+            payload: { msg: error.response.data.msg },
+        });
     }
-    clearAlert()
-  }
+    clearAlert();
+};
 
   const logoutUser = async () => {
     await authFetch.get('/logout')
@@ -123,7 +130,33 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+  const getAttestations = async () => {
 
+
+    let url = `api/attestations`
+
+    dispatch({ type: GET_ATTESTATIONS_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+
+      const { attestations, totalItems, pagesCount } = data
+
+      const totalAttestations = totalItems
+      const numOfPages = pagesCount
+
+      dispatch({
+        type: GET_ATTESTATIONS_SUCCESS,
+        payload: {
+          attestations,
+          totalAttestations,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
   return (
     <AppContext.Provider
       value={{
@@ -135,6 +168,7 @@ const AppProvider = ({ children }) => {
         clearValues,
         setupUser,
         getFormations,
+        getAttestations
       }}
     >
       {children}

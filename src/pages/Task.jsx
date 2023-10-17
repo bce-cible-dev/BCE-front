@@ -1,6 +1,5 @@
 import Footer from '../components/footer/Footer'
 import TaskHeader from '../components/header/TaskHeader'
-import TaskTableFilter from '../components/filter/TaskTableFilter'
 import TaskTable from '../components/tables/TaskTable'
 import AddNewTaskModal from '../components/modal/AddNewTaskModal'
 import EditTaskModal from '../components/modal/EditTaskModal'
@@ -14,7 +13,7 @@ const TaskMainContent = () => {
           <div className='panel'>
             <TaskHeader />
             <div className='panel-body'>
-              <TaskTableFilter />
+              {/* <TaskTableFilter /> */}
               <TaskTable />
             </div>
           </div>

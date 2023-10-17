@@ -9,6 +9,8 @@ import {
   CLEAR_VALUES,
   GET_FORMATIONS_BEGIN,
   GET_FORMATIONS_SUCCESS,
+  GET_ATTESTATIONS_BEGIN,
+  GET_ATTESTATIONS_SUCCESS,
 } from './actions'
 
 const reducer = (state, action) => {
@@ -84,6 +86,23 @@ const reducer = (state, action) => {
         numOfPages: action.payload.numberOfPages,
         totalFormations: action.payload.totalFormations,
       }
+
+//get Attestations
+      case GET_ATTESTATIONS_BEGIN:
+        return {
+          ...state,
+          isLoading: true,
+          showAlert: false,
+        }
+  
+      case GET_ATTESTATIONS_SUCCESS:
+        return {
+          ...state,
+          isLoading: false,
+          attestations: action.payload.attestations,
+          numOfPages: action.payload.numberOfPages,
+          totalAttestations: action.payload.totalAttestations,
+        }
 
     default:
       throw new Error(`no such action : ${action.type}`)

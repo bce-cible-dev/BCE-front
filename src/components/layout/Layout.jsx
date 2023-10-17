@@ -4,7 +4,6 @@ import Header from '../header/Header';
 import RightSidebar from '../sidebar/RightSidebar';
 import MainSidebar from '../sidebar/MainSidebar';
 import { Outlet } from 'react-router-dom';
-import RightSidebarButton from '../header/RightSidebarButton';
 import ProfileRightSidebar from '../sidebar/right-sidebar/ProfileRightSidebar';
 import { ToastContainer } from 'react-toastify';
 
@@ -37,7 +36,6 @@ const Layout = () => {
       <Header />
       <RightSidebar />
       <ProfileRightSidebar/>
-      <RightSidebarButton/>
       <MainSidebar/>
       <ToastContainer />
       <Outlet/>

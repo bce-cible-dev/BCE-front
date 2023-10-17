@@ -18,7 +18,7 @@ const FileInputSectionFormation = () => {
     setIsUploading(true)
 
     axios
-      .post('https://www.app.tunitech-engineering.com/api/excel/import', fd, {
+      .post('http://127.0.0.1:8000/api/excel/import', fd, {
         onUploadProgress: (progressEvent) => {
           const completedPercentage = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total

@@ -30,7 +30,7 @@ const TaskHeader = () => {
 
   return (
     <div className='panel-header'>
-      <h5>Task Summary</h5>
+      <h5>Attestations List</h5>
       <div className='btn-box d-flex flex-wrap gap-2'>
         <div id='tableSearch'>
           <Form.Control type='text' placeholder='Search...' />
