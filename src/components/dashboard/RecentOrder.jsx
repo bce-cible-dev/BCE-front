@@ -1,13 +1,11 @@
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import data from '../../data.json'
 import { useAppContext } from '../../context/appContext'
 
 const RecentOrder = () => {
-  const { formations } = useAppContext()
+  const { formations, getFormations } = useAppContext()
 
-  const { getFormations } = useAppContext()
   useEffect(() => {
     getFormations()
   }, [])
