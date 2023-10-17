@@ -1,0 +1,511 @@
+{
+	"info": {
+		"_postman_id": "3912cf88-3f80-4fe9-9b9a-bfbb20c40ee6",
+		"name": "API_ATTESTATION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23163210",
+		"_collection_link": "https://www.postman.com/alifahtallah/workspace/softdesk/collection/23163210-3912cf88-3f80-4fe9-9b9a-bfbb20c40ee6?action=share&source=collection_link&creator=23163210"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json()\r",
+									"pm.environment.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"test@gmail.com\",\r\n    \"password\": \"test123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json()\r",
+									"pm.environment.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"test@gmail.com\",\r\n//   \"email\":\"test@gmail.com\",\r\n    \"password\": \"test123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Etudiuant",
+			"item": [
+				{
+					"name": "Etudiant  create/get/put/delete Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/api/etudiants",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"etudiants"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GroupedBy Students",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTcxOTEwNzgsImV4cCI6MTcwMDc5MTA3OCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEBnbWFpbC5jb20ifQ.MEqAyfjB1taEBxH2W168gVgLm8ZwhB1UJeCJ1-RSG26or542N1G0sOqwW52KFok6syZg6500E7CqTHVHl5xsQasiU3ryo1MYES3K-fwngo1utmsadiMBqnehuMdN9DvovmHx7ccZHElyyCy55lJIyoyDvwiu4LVyHWyzrgmaeGrYlxLlw5a8UyK5af7Wc67D5kJtwsIhlwwVGWsSe7WkZ_3Q7s_UdmDCfCb7WAvJYdB5WDn5d2gEC0nQDYCx6WPtMBehNmAKxWL6HAkn4j5uel983RrW4LOGmRuBDRWGUopiCpnjh8GXgaxLUK1rR7qN66rBNzqOA4FJ8qWIaUE8faY2MVvI3qYKH5zZk70WMjUM-ge9uKbKDKtdnHvQ8cA-2-AtpodpPlgrRK0uqcAR2O2uc-Tn162CM_JxCBiWnqypiHuCfJmLTGnmZ-1tZfCvZz4k9UfA_cTkLiBsiBQ7mu7qcrqsCuIELnd3qKqhIFB5aA56fair7AFaCHGxCo8VQfNi-wBPjP11y1QwYnYU-OSVzIcW1t3Fo8FJ7GEXkqayzyzXbvxjtqoVNwDWAV4IDhtizVy7iJ6l4-w89dEsMgXaaxrMQGpMB8QbVlKUK0Y9pPtybuN_zWzte2zBWCtJsNuANhT-yhX2QpdEi9V-2AE5vRyq7Td2zOU73v_CKJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/formation/grouped",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"formation",
+								"grouped"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Module",
+			"item": [
+				{
+					"name": "MODULE  create/get/put/delete",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"module test11\",\r\n    \"credit\": 2.4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/modules",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"modules"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "import Module values via Fichier Exel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "excel_import[excelFile]",
+									"type": "file",
+									"src": "/C:/Users/salwa/Downloads/Stérile - Structure des cours pour OA_crédit Roxanne.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/module/excel/import",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"module",
+								"excel",
+								"import"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Formation",
+			"item": [
+				{
+					"name": "Formation  create/get/put/delete",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/formations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"formations"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attestation",
+			"item": [
+				{
+					"name": "Generate pdf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTcxOTEwNzgsImV4cCI6MTcwMDc5MTA3OCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEBnbWFpbC5jb20ifQ.MEqAyfjB1taEBxH2W168gVgLm8ZwhB1UJeCJ1-RSG26or542N1G0sOqwW52KFok6syZg6500E7CqTHVHl5xsQasiU3ryo1MYES3K-fwngo1utmsadiMBqnehuMdN9DvovmHx7ccZHElyyCy55lJIyoyDvwiu4LVyHWyzrgmaeGrYlxLlw5a8UyK5af7Wc67D5kJtwsIhlwwVGWsSe7WkZ_3Q7s_UdmDCfCb7WAvJYdB5WDn5d2gEC0nQDYCx6WPtMBehNmAKxWL6HAkn4j5uel983RrW4LOGmRuBDRWGUopiCpnjh8GXgaxLUK1rR7qN66rBNzqOA4FJ8qWIaUE8faY2MVvI3qYKH5zZk70WMjUM-ge9uKbKDKtdnHvQ8cA-2-AtpodpPlgrRK0uqcAR2O2uc-Tn162CM_JxCBiWnqypiHuCfJmLTGnmZ-1tZfCvZz4k9UfA_cTkLiBsiBQ7mu7qcrqsCuIELnd3qKqhIFB5aA56fair7AFaCHGxCo8VQfNi-wBPjP11y1QwYnYU-OSVzIcW1t3Fo8FJ7GEXkqayzyzXbvxjtqoVNwDWAV4IDhtizVy7iJ6l4-w89dEsMgXaaxrMQGpMB8QbVlKUK0Y9pPtybuN_zWzte2zBWCtJsNuANhT-yhX2QpdEi9V-2AE5vRyq7Td2zOU73v_CKJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "excel_import[excelFile]",
+									"type": "file",
+									"src": "/C:/Users/salwa/Downloads/OneDrive_2023-10-11/Contrôle de la qualité/_Confidentiel_BCE - Formations complétées - 2023-04-01 à 2023-04-30.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/generate/attestation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"generate",
+								"attestation"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "salwawebdev@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "BCE@2023",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "import Fichier Formation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTcxOTEwNzgsImV4cCI6MTcwMDc5MTA3OCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEBnbWFpbC5jb20ifQ.MEqAyfjB1taEBxH2W168gVgLm8ZwhB1UJeCJ1-RSG26or542N1G0sOqwW52KFok6syZg6500E7CqTHVHl5xsQasiU3ryo1MYES3K-fwngo1utmsadiMBqnehuMdN9DvovmHx7ccZHElyyCy55lJIyoyDvwiu4LVyHWyzrgmaeGrYlxLlw5a8UyK5af7Wc67D5kJtwsIhlwwVGWsSe7WkZ_3Q7s_UdmDCfCb7WAvJYdB5WDn5d2gEC0nQDYCx6WPtMBehNmAKxWL6HAkn4j5uel983RrW4LOGmRuBDRWGUopiCpnjh8GXgaxLUK1rR7qN66rBNzqOA4FJ8qWIaUE8faY2MVvI3qYKH5zZk70WMjUM-ge9uKbKDKtdnHvQ8cA-2-AtpodpPlgrRK0uqcAR2O2uc-Tn162CM_JxCBiWnqypiHuCfJmLTGnmZ-1tZfCvZz4k9UfA_cTkLiBsiBQ7mu7qcrqsCuIELnd3qKqhIFB5aA56fair7AFaCHGxCo8VQfNi-wBPjP11y1QwYnYU-OSVzIcW1t3Fo8FJ7GEXkqayzyzXbvxjtqoVNwDWAV4IDhtizVy7iJ6l4-w89dEsMgXaaxrMQGpMB8QbVlKUK0Y9pPtybuN_zWzte2zBWCtJsNuANhT-yhX2QpdEi9V-2AE5vRyq7Td2zOU73v_CKJM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "excel_import[excelFile]",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "file",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/excel/import",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"excel",
+						"import"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "salwawebdev@gmail.com",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "BCE@2023",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "url_base",
+			"value": "www.app.tunitech-engineering.com"
+		}
+	]
+}
