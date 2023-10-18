@@ -1255,6 +1255,16 @@ input[type=checkbox] {
   padding: 4.5px 10px;
   border-radius: 3px;
 }
+.btn-default {
+  background-color: #cbcfcf;
+  border-color: #c4cacb;
+  opacity: 0.5;
+}
+.btn-default:hover {
+  background-color: #cbcfcf;
+  border-color: #c4cacb;
+  opacity: 0.5;
+}
 .btn.btn-icon {
   padding: 0;
   width: 35px;

@@ -1,7 +1,10 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 
+//import { useHistory } from 'react-router-dom';
 const FileInputSectionFormation = () => {
+ // const history = useHistory();
+
   const [file, setFile] = useState()
   const [progress, setProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
@@ -18,7 +21,7 @@ const FileInputSectionFormation = () => {
     setIsUploading(true)
 
     axios
-      .post('http://127.0.0.1:8000/api/excel/import', fd, {
+      .post('http://127.0.0.1:8000/api/module/excel/import', fd, {
         onUploadProgress: (progressEvent) => {
           const completedPercentage = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
@@ -41,7 +44,8 @@ const FileInputSectionFormation = () => {
       const progressBarTimeout = setTimeout(() => {
         setIsUploading(false);
         window.location.reload(); 
-      }, 3000)
+     
+      }, 4000)
 
       return () => {
         clearTimeout(progressBarTimeout)
@@ -59,7 +63,7 @@ const FileInputSectionFormation = () => {
           <div className='row'>
             <div className='col-8'>
               <label htmlFor='formFile' className='form-label '>
-              Importer Fichier Excel sous Format (A: Client,  B: User,  C: dateDebut,  D: dateFin,  E: Module)
+                Importer Fichier Excel sous Format (A: Title , B: credit) 
               </label>
               <input
                 onChange={(e) => {

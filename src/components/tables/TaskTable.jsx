@@ -34,7 +34,7 @@ const TaskTable = () => {
                     <th>Modules</th>
                     <th>Credit</th>
                     <th>Date</th>
-                    <th>Status</th>
+                    <th>PDF</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -47,11 +47,12 @@ const TaskTable = () => {
                     modules,
                     credit,
                     dateFormations,
+                    path,
                     etat,
                   
                   }) => ( 
                     <tr key={id}>
-                      <td>{id}</td>
+                    
                       <td>{client}</td>
                       <td>{user}</td>
                       <td>
@@ -62,21 +63,22 @@ const TaskTable = () => {
                        <td>{credit}</td>
                       <td>30-{dateFormations}</td>
                       <td>
-                      {etat === 1 ? 
-                        <span className="badge bg-success">Telécharger</span> 
+                        {etat}
+                      {etat == 1 ?
+                      <a href={`http://127.0.0.1:8000${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" class="file-icon" alt="Image" /></a>
+                
                         : 
-                        <span className="badge bg-secondary">Generer</span>
+                        <span className="badge bg-default">---</span>
                          }
                         </td>
                 <td>
                 <div className="btn-box">
-                {etat === 1 ? 
-                <a className="btn btn-sm btn-icon btn-info"
-                    href="http://127.0.0.1:8000/api/generate/attestation/'.{id}.'" target='_blanck'
-                >
+                {etat == 1 ? 
+                <spa className="btn btn-sm btn-icon btn-default ">
+             
                     <i className="fa-light fa-print" style={{color: 'white'}}></i> 
-                </a>:  <a 
-            className="btn btn-sm btn-icon btn-default"
+                </spa>:  <a 
+            className="btn btn-sm btn-icon btn-success"
             href={`http://127.0.0.1:8000/api/generate/attestation/${id}`} 
             target='_blank'
             rel='noopener noreferrer'
@@ -84,19 +86,19 @@ const TaskTable = () => {
                     <i className="fa-light fa-print" style={{color: 'white'}}></i> 
                 </a>}
                     <button
-                    className="btn btn-sm btn-icon btn-primary"
+                    className="btn btn-sm btn-icon btn-danger"
                   
                     data-bs-toggle="modal"
                     data-bs-target="#editTaskModal"
                     >
                         
-                    <i className="fa-light fa-edit"></i>
+                    <i className="fa-light fa-trash"></i>
                     </button>
-                    <button
+                    {/* <button
                     className="btn btn-sm btn-icon btn-danger"
                     >
                     <i className="fa-light fa-trash-can"></i>
-                    </button>
+                    </button> */}
                 </div>
                 </td>
             </tr>

@@ -59,7 +59,7 @@ const Header = () => {
                     </button>
                     )}
                 </div>
-                <Link to="#" target="_blank" className="btn btn-sm btn-primary site-view-btn"><i className="fa-light fa-globe me-1"></i> <span>View Website</span></Link>
+                <Link to="/allAttestationPdfFile" target="_blank" className="btn btn-sm btn-primary site-view-btn"><i className="fa-light fa-eye me-1"></i> <span>View all Attestations</span></Link>
             </div>
             <div className="col-4 d-lg-none">
                 {isLightTheme ? <div className="mobile-logo">

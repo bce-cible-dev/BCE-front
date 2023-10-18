@@ -35,79 +35,32 @@ const PagesPart = () => {
         className={`sidebar-link-group-title has-sub ${isMainDropdownOpen ? 'show' : ''}`}
         onClick={toggleMainPagesDropdown}
       >
-        Administaration
+       Manager
       </Link>
       <ul className={`sidebar-link-group ${layoutPosition.horizontal ? (dropdownOpen.pages ? 'd-block' : '') : (isMainDropdownOpen ? 'd-none' : '')}`}>       
-        <li className="sidebar-dropdown-item">
-          <Link
-            role="button"
-            className={`sidebar-link has-sub ${authentication ? 'show' : ''}`}
-            onClick={toggleAuthentication}
-          >
+    
+     <li className="sidebar-dropdown-item">
+          <NavLink to="/application" className="sidebar-link">
             <span className="nav-icon">
-              <i className="fa-light fa-user-cog"></i>
+              <i className="fa-light fa-light fa-user-cog"></i>
             </span>{' '}
-            <span className="sidebar-txt">Authentication</span>
-          </Link>
-          <ul className={`sidebar-dropdown-menu ${authentication ? 'd-block' : ''}`}>
-            <li className="sidebar-dropdown-item">
-              <NavLink to="/login" className="sidebar-link">
-                Login
-              </NavLink>
-            </li>
-          
-            <li className="sidebar-dropdown-item">
-              <NavLink to="/resetPassword" className="sidebar-link">
-                Reset Password
-              </NavLink>
-            </li>
-            <li className="sidebar-dropdown-item">
-              <NavLink to="/updatePassword" className="sidebar-link">
-                Update Password
-              </NavLink>
-            </li>
-            <li className="sidebar-dropdown-item">
-              <NavLink to="/loginStatus" className="sidebar-link">
-                Login Status
-              </NavLink>
-            </li>
-          </ul>
-        </li>
-        <li className="sidebar-dropdown-item">
-          <Link
-            role="button"
-            className={`sidebar-link has-sub ${error ? 'show' : ''}`}
-            onClick={toggleError}
-          >
-            <span className="nav-icon">
-              <i className="fa-light fa-triangle-exclamation"></i>
-            </span>{' '}
-            <span className="sidebar-txt">Error</span>
-          </Link>
-          <ul className={`sidebar-dropdown-menu ${error ? 'd-block' : ''}`}>
-            <li className="sidebar-dropdown-item">
-              <NavLink to="/error400" className="sidebar-link">
-                Error 400
-              </NavLink>
-            </li>
-         
-          </ul>
-        </li>
-   
-        <li className="sidebar-dropdown-item">
-          <NavLink to="/profile" className="sidebar-link">
-            <span className="nav-icon">
-              <i className="fa-light fa-light fa-user"></i>
-            </span>{' '}
-            <span className="sidebar-txt"> Profile</span>
+            <span className="sidebar-txt"> Administrateurs</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">
-          <NavLink to="/editProfile" className="sidebar-link">
+          <NavLink to="/application" className="sidebar-link">
             <span className="nav-icon">
-              <i className="fa-light fa-light fa-user"></i>
+              <i className="fa-light fa-compass-drafting"></i>
             </span>{' '}
-            <span className="sidebar-txt">  Edit Profile</span>
+            <span className="sidebar-txt"> Update Password</span>
+          </NavLink>
+        </li>
+        <li className="sidebar-dropdown-item">
+          <NavLink to="/application" className="sidebar-link">
+            <span className="nav-icon">
+              <i className="fa-light fa-arrow-right-from-bracket"></i>
+            </span>{' '}
+            <span className="sidebar-txt"> logout</span>
           </NavLink>
         </li>
       </ul>

@@ -12,6 +12,10 @@ import {
   GET_FORMATIONS_SUCCESS,
   GET_ATTESTATIONS_BEGIN,
   GET_ATTESTATIONS_SUCCESS,
+  GET_MODULES_BEGIN,
+  GET_MODULES_SUCCESS,
+  GET_DOCUMENTS_BEGIN,
+  GET_DOCUMENTS_SUCCESS,
 } from './actions'
 import { initialState, AppContext } from './appContext'
 
@@ -154,6 +158,75 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+  const getModules = async () => {
+    // const { page, search, searchStatus, searchType, sort } = state
+    // let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+    // if (search) {
+    //   url = url + `&search=${search}`
+    // }
+    let url = `api/attestaions`
+
+    dispatch({ type: GET_MODULES_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+
+      res = { data, totalItems, pagesCount }
+
+      console.log(res)
+      const { modules, totalModules, numOfPages } = {
+        data,
+        totalItems,
+        pagesCount,
+      }
+
+      dispatch({
+        type: GET_MODULES_SUCCESS,
+        payload: {
+          modules,
+          totalModules,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
+
+  const getDocuments = async () => {
+    // const { page, search, searchStatus, searchType, sort } = state
+    // let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+    // if (search) {
+    //   url = url + `&search=${search}`
+    // }
+    let url = `api/attestaions`
+
+    dispatch({ type: GET_DOCUMENTS_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+
+      res = { data, totalItems, pagesCount }
+
+      console.log(res)
+      const { documents, totalDocuments, numOfPages } = {
+        data,
+        totalItems,
+        pagesCount,
+      }
+
+      dispatch({
+        type: GET_DOCUMENTS_SUCCESS,
+        payload: {
+          documents,
+          totalDocuments,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
   return (
     <AppContext.Provider
       value={{
@@ -165,7 +238,9 @@ const AppProvider = ({ children }) => {
         clearValues,
         setupUser,
         getFormations,
-        getAttestations
+        getAttestations,
+        getModules,
+        getDocuments
       }}
     >
       {children}

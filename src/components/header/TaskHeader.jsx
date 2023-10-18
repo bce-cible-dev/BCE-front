@@ -1,10 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { DigiContext } from '../../context/DigiContext'
 import { Form } from 'react-bootstrap'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
+
+const MySwal = withReactContent(Swal)
 const TaskHeader = () => {
   const {
-    handleShowAddNewTaskModal,
     headerBtnOpen,
     handleHeaderBtn,
     handleHeaderReset,
@@ -27,7 +30,58 @@ const TaskHeader = () => {
       [id]: !prevCheckboxes[id],
     }))
   }
+  const handleButtonClick = (alertType) => {
+    switch (alertType) {
+      case 'saClose':
+        let timerInterval
+        MySwal.fire({
+          title: '.....En cours de regrouper les modules!',
+          html: 'Creation effectuer avec <b></b> successeful.',
+          timer: 6000,
+          timerProgressBar: true,
+          didOpen: () => {
+         
+            MySwal.showLoading()
+            const b = MySwal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+              b.textContent = MySwal.getTimerLeft();
+              window.location.reload();
+            }, 100)
+          },
+          willClose: () => {
+            
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          if (result.dismiss === MySwal.DismissReason.timer) {
+            createAttestations();
+            console.log('I was closed by the timer')
+          }
+       
+      });
+      break;}}
+  const createAttestations = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/formation/grouped", {
+        method: "GET", // ou "POST" si nécessaire
+        headers: {
+          "Content-Type": "application/json",
+          // Ajoutez ici d'autres entêtes si nécessaire (comme des tokens d'authentification)
+        },
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        handleButtonClick('saClose');
+        console.log(data); // Traitement des données reçues ou autre logique
+        // Par exemple, affichez une notification à l'utilisateur que les attestations ont été créées
+      } else {
+        console.error("Erreur lors de la création des attestations:", await response.text());
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'appel à l'API:", error);
+    }
+  };
   return (
     <div className='panel-header'>
       <h5>Attestations List</h5>
@@ -153,14 +207,9 @@ const TaskHeader = () => {
             </li>
           </ul>
         </div>
-        <button
-          className='btn btn-sm btn-primary'
-          onClick={handleShowAddNewTaskModal}
-          data-bs-toggle='modal'
-          data-bs-target='#addTaskModal'
-        >
-          <i className='fa-light fa-plus'></i> Add New
-        </button>
+        <button className='btn btn-sm btn-primary' onClick={createAttestations}>
+      <i className='fa-light fa-plus'></i> Creer les attestations
+    </button>
       </div>
     </div>
   )

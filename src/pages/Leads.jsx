@@ -1,7 +1,8 @@
 import Footer from '../components/footer/Footer';
 import LeadsHeader from '../components/header/LeadsHeader';
-import LeadsTableFilter from '../components/filter/LeadsTableFilter';
+// import LeadsTableFilter from '../components/filter/LeadsTableFilter';
 import LeadsTable from '../components/tables/LeadsTable';
+import FileInputSectionModule from '../components/forms/FileInputSectionModule'
 const LeadsMainContent = () => {
 
   
@@ -9,10 +10,12 @@ const LeadsMainContent = () => {
     <div className="main-content">
         <div className="row">
             <div className="col-12">
+            <FileInputSectionModule />
                 <div className="panel">
+               
                     <LeadsHeader/>
                     <div className="panel-body">
-                        <LeadsTableFilter/>
+                        {/* <LeadsTableFilter/> */}
                         <LeadsTable/>
                     </div>
                 </div>

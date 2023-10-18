@@ -20,53 +20,53 @@ const DashboardPart = () => {
        <li className="sidebar-dropdown-item">
           <NavLink to="/application" className="sidebar-link">
             <span className="nav-icon">
-              <i className="fa-light fa-cart-shopping-fast"></i>
+              <i className="fa-light fa-memo-pad"></i>
             </span>{' '}
             <span className="sidebar-txt">Formations</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">
           <NavLink
-            to="/task"
+            to="/AttestationsList"
             className="sidebar-link"
           >
             <span className="nav-icon">
-              <i className="fa-light fa-user-headset"></i>
+            <i className="fa-duotone fa-download"></i>
             </span>{' '}
             <span className="sidebar-txt">Attestaions</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">
           <NavLink
-            to="/leads"
+            to="/allModules"
             className="sidebar-link"
           >
             <span className="nav-icon">
-              <i className="fa-light fa-user-tie"></i>
+              <i className="fa-light fa-layer-group"></i>
             </span>{' '}
             <span className="sidebar-txt">Modules</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">
           <NavLink
-            to="/allEmployee"
+            to="/allAttestationPdfFile"
             className="sidebar-link"
           >
             <span className="nav-icon">
-              <i className="fa-light fa-user-tie"></i>
+              <i className="fa-light fa-folder-open"></i>
             </span>{' '}
-            <span className="sidebar-txt">Users </span>
+            <span className="sidebar-txt">PDF Attestations</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">
           <NavLink
-            to="/profile"
+            to="/application"
             className="sidebar-link"
           >
             <span className="nav-icon">
-              <i className="fa-light fa-user-tie"></i>
+              <i className="fa-light fa-users"></i>
             </span>{' '}
-            <span className="sidebar-txt">Profile </span>
+            <span className="sidebar-txt">Users</span>
           </NavLink>
         </li>
 

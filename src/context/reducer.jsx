@@ -15,6 +15,10 @@ import {
   EDIT_FORMATION_SUCCESS,
   DELETE_FORMATION_BEGIN,
   DELETE_FORMATION_SUCCESS,
+  GET_MODULES_BEGIN,
+  GET_MODULES_SUCCESS,
+  GET_DOCUMENTS_BEGIN,
+  GET_DOCUMENTS_SUCCESS,
 } from './actions'
 import { initialState } from './appContext'
 
@@ -110,6 +114,39 @@ const reducer = (state, action) => {
         totalAttestations: action.payload.totalAttestations,
       }
 
+  //get Modules
+   case GET_MODULES_BEGIN:
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    }
+
+  case GET_MODULES_SUCCESS:
+    return {
+      ...state,
+      isLoading: false,
+      modules: action.payload.modules,
+      numOfPages: action.payload.numberOfPages,
+      totalModules: action.payload.totalModules,
+    }
+    //get Documents
+    case GET_DOCUMENTS_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        showAlert: false,
+      }
+
+    case GET_DOCUMENTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        documents: action.payload.documents,
+        numOfPages: action.payload.numberOfPages,
+        totalDocuments: action.payload.totalDocuments,
+      }
+//editformation
     case EDIT_FORMATION_BEGIN:
       console.log(action.payload.formationId)
       return {

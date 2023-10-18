@@ -17,6 +17,10 @@ import {
   EDIT_FORMATION_SUCCESS,
   DELETE_FORMATION_BEGIN,
   DELETE_FORMATION_SUCCESS,
+  GET_MODULES_BEGIN,
+  GET_MODULES_SUCCESS,
+  GET_DOCUMENTS_BEGIN,
+  GET_DOCUMENTS_SUCCESS,
 } from './actions'
 
 const initialState = {
@@ -28,6 +32,8 @@ const initialState = {
   totalFormations: 0,
   attestations: [],
   totalAttestations: 0,
+  modules: [],
+  totalModules: 0,
   page: 1,
   numOfPages: 1,
   formationToEdit: '',
@@ -40,8 +46,8 @@ const AppProvider = ({ children }) => {
 
   // axios
   const authFetch = axios.create({
-    baseURL: 'https://www.app.tunitech-engineering.com',
-    //baseURL: 'http://127.0.0.1:8000/',
+    //baseURL: 'https://www.app.tunitech-engineering.com',
+    baseURL: 'http://127.0.0.1:8000/',
   })
   // request
 
@@ -137,6 +143,7 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+
   const getAttestations = async () => {
     let url = `api/attestations`
 
@@ -163,6 +170,58 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  const getModules = async () => {
+    let url = `api/modules`
+
+    dispatch({ type: GET_MODULES_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+
+      const { modules, totalItems, pagesCount } = data
+
+      const totalModules = totalItems
+      const numOfPages = pagesCount
+
+      dispatch({
+        type: GET_MODULES_SUCCESS,
+        payload: {
+          modules,
+          totalModules,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
+
+  
+const getDocuments = async () => {
+  let url = `api/pdf/attestations`
+
+  dispatch({ type: GET_DOCUMENTS_BEGIN })
+  try {
+    const { data } = await authFetch.get(url)
+
+    const { documents, totalItems, pagesCount } = data
+
+    const totalDocuments = totalItems
+    const numOfPages = pagesCount
+
+    dispatch({
+      type: GET_DOCUMENTS_SUCCESS,
+      payload: {
+        documents,
+        totalDocuments,
+        numOfPages,
+      },
+    })
+  } catch (error) {
+    // logoutUser()
+  }
+  clearAlert()
+}
   const startEditFormation = async (id) => {
     dispatch({
       type: EDIT_FORMATION_BEGIN,
@@ -205,6 +264,8 @@ const AppProvider = ({ children }) => {
         getAttestations,
         startEditFormation,
         deleteFormation,
+        getModules,
+        getDocuments,
       }}
     >
       {children}
