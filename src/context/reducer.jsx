@@ -5,13 +5,18 @@ import {
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
   HANDLE_CHANGE,
-  // LOGOUT_USER,
+  LOGOUT_USER,
   CLEAR_VALUES,
   GET_FORMATIONS_BEGIN,
   GET_FORMATIONS_SUCCESS,
   GET_ATTESTATIONS_BEGIN,
   GET_ATTESTATIONS_SUCCESS,
+  EDIT_FORMATION_BEGIN,
+  EDIT_FORMATION_SUCCESS,
+  DELETE_FORMATION_BEGIN,
+  DELETE_FORMATION_SUCCESS,
 } from './actions'
+import { initialState } from './appContext'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -53,6 +58,12 @@ const reducer = (state, action) => {
         alertText: action.payload.msg,
       }
 
+    case LOGOUT_USER:
+      return {
+        ...initialState,
+        user: '',
+      }
+
     case HANDLE_CHANGE:
       return {
         ...state,
@@ -61,14 +72,9 @@ const reducer = (state, action) => {
       }
 
     case CLEAR_VALUES:
-      const initialState = {
+      return {
+        ...state,
         isEditing: false,
-        editJobId: '',
-        position: '',
-        company: '',
-        jobLocation: state.userLocation,
-        jobType: 'full-time',
-        status: 'pending',
       }
 
     case GET_FORMATIONS_BEGIN:
@@ -83,26 +89,46 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         formations: action.payload.formations,
-        numOfPages: action.payload.numberOfPages,
+        numOfPages: action.payload.numOfPages,
         totalFormations: action.payload.totalFormations,
       }
 
-//get Attestations
-      case GET_ATTESTATIONS_BEGIN:
-        return {
-          ...state,
-          isLoading: true,
-          showAlert: false,
-        }
-  
-      case GET_ATTESTATIONS_SUCCESS:
-        return {
-          ...state,
-          isLoading: false,
-          attestations: action.payload.attestations,
-          numOfPages: action.payload.numberOfPages,
-          totalAttestations: action.payload.totalAttestations,
-        }
+    //get Attestations
+    case GET_ATTESTATIONS_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        showAlert: false,
+      }
+
+    case GET_ATTESTATIONS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        attestations: action.payload.attestations,
+        numOfPages: action.payload.numberOfPages,
+        totalAttestations: action.payload.totalAttestations,
+      }
+
+    case EDIT_FORMATION_BEGIN:
+      console.log(action.payload.formationId)
+      return {
+        ...state,
+        formationId: action.payload.formationId,
+      }
+    case EDIT_FORMATION_SUCCESS:
+      return {
+        ...state,
+        formationToEdit: action.payload.formationToEdit,
+      }
+    case DELETE_FORMATION_BEGIN:
+      return {
+        ...state,
+      }
+    case DELETE_FORMATION_SUCCESS:
+      return {
+        ...state,
+      }
 
     default:
       throw new Error(`no such action : ${action.type}`)

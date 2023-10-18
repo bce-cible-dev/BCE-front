@@ -1,36 +1,38 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { DigiContext } from '../../context/DigiContext'
+import { useAppContext } from '../../context/appContext'
 import CkEditor from '../ck-editor/CkEditor'
 import Select from 'react-select'
+import axios from 'axios'
 
-const EditTaskModal = () => {
+const EditFormationTaskModal = () => {
   const { show, handleClose } = useContext(DigiContext)
+  const { formationToEdit, startEditFormation, formationId } = useAppContext()
 
-  const options = [
-    { value: 'LewisStone', label: 'Lewis Stone' },
-    { value: 'JackHolland', label: 'Jack Holland' },
-    { value: 'LilyBurgess', label: 'Lily Burgess' },
-    { value: 'HarrisonFrench', label: 'Harrison French' },
-    { value: 'IsabelMellor', label: 'Isabel Mellor' },
-    { value: 'AdamBates', label: 'Adam Bates' },
-    { value: 'MillieLee', label: 'Millie Lee' },
-    { value: 'MadeleineHart', label: 'Madeleine Hart' },
-    { value: 'LouiseGoddard', label: 'Louise Goddard' },
-    { value: 'JosephFrancis', label: 'Joseph Francis' },
-    { value: 'KaiBarker', label: 'Kai Barker' },
-    { value: 'ErinKnight', label: 'Erin Knight' },
-    { value: 'JaydenTaylor', label: 'Jayden Taylor' },
-    { value: 'SophieHilton', label: 'Sophie Hilton' },
-    { value: 'LeahWright', label: 'Leah Wright' },
-    { value: 'LewisHooper', label: 'Lewis Hooper' },
-  ]
+  const [values, setValues] = useState({
+    client: formationToEdit.client,
+    etudiant: formationToEdit.etudiant,
+    module: formationToEdit.module,
+    dateCompletion: formationToEdit.dateCompletion,
+  })
 
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value })
+    console.log(values)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(values)
+    console.log(formationToEdit)
+  }
+  useEffect(() => {}, [])
   return (
-    <div>
+    <>
       <Modal show={show} onHide={handleClose} size='lg' centered>
         <Modal.Header>
-          <Modal.Title>Edit Task</Modal.Title>
+          <Modal.Title>Modifier une formation</Modal.Title>
           <Button
             variant='outline-primary'
             size='sm'
@@ -45,17 +47,62 @@ const EditTaskModal = () => {
           <div className='row g-3'>
             <div className='col-12'>
               <label htmlFor='editTaskName' className='form-label'>
-                Name
+                Client
               </label>
               <input
                 type='text'
                 id='editTaskName'
                 className='form-control form-control-sm'
                 placeholder='Task Name'
-                value='Web Design & Development'
+                name='client'
+                value={values.client}
+                onChange={handleChange}
               />
             </div>
             <div className='col-12'>
+              <label htmlFor='editTaskName' className='form-label'>
+                Etudiant
+              </label>
+              <input
+                type='text'
+                id='editTaskName'
+                className='form-control form-control-sm'
+                placeholder='Task Name'
+                name='etudiant'
+                value={values.etudiant}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='col-12'>
+              <label htmlFor='editTaskName' className='form-label'>
+                Module
+              </label>
+              <input
+                type='text'
+                id='editTaskName'
+                className='form-control form-control-sm'
+                placeholder='Task Name'
+                name='module'
+                value={values.module}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='col-sm-6'>
+              <label htmlFor='editTaskEndDate' className='form-label'>
+                Date de fin
+              </label>
+              <input
+                type='text'
+                id='editTaskEndDate'
+                className='form-control form-control-sm date-picker'
+                placeholder='Eg: 12 Feb, 20'
+                name='dateCompletion'
+                value={values.dateCompletion}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* <div className='col-12'>
               <label htmlFor='editTaskAttchment' className='form-label'>
                 Attach File
               </label>
@@ -136,20 +183,26 @@ const EditTaskModal = () => {
             <div className='col-12'>
               <label className='form-label'>Task Description</label>
               <CkEditor />
-            </div>
+            </div> */}
           </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleClose}>
             Close
           </Button>
-          <Button variant='primary' onClick={handleClose}>
+          <Button
+            variant='primary'
+            onClick={() => {
+              handleClose()
+              handleSubmit()
+            }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   )
 }
 
-export default EditTaskModal
+export default EditFormationTaskModal

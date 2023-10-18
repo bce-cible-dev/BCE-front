@@ -16,12 +16,20 @@ import FileManager from './pages/FileManager'
 import Layout from './components/layout/Layout'
 import Login from './pages/Login3'
 import Error400 from './pages/Error400'
+import ProtectedRoutes from './pages/ProtectedRoutes'
 function App() {
   return (
     <Router>
       <Routes>
         <Route path='/' element={<Login />} />
-        <Route element={<Layout />}>
+
+        <Route
+          element={
+            <ProtectedRoutes>
+              <Layout />
+            </ProtectedRoutes>
+          }
+        >
           <Route path='/application' element={<Dashboard />} />
           <Route path='/fileManager' element={<FileManager />} />
           <Route path='/task' element={<Task />} />

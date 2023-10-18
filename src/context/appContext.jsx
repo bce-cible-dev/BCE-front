@@ -8,9 +8,15 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
+  LOGOUT_USER,
   GET_FORMATIONS_BEGIN,
   GET_FORMATIONS_SUCCESS,
-  GET_ATTESTATIONS_BEGIN,GET_ATTESTATIONS_SUCCESS
+  GET_ATTESTATIONS_BEGIN,
+  GET_ATTESTATIONS_SUCCESS,
+  EDIT_FORMATION_BEGIN,
+  EDIT_FORMATION_SUCCESS,
+  DELETE_FORMATION_BEGIN,
+  DELETE_FORMATION_SUCCESS,
 } from './actions'
 
 const initialState = {
@@ -24,6 +30,7 @@ const initialState = {
   totalAttestations: 0,
   page: 1,
   numOfPages: 1,
+  formationToEdit: '',
 }
 
 const AppContext = React.createContext()
@@ -33,8 +40,8 @@ const AppProvider = ({ children }) => {
 
   // axios
   const authFetch = axios.create({
-    //baseURL: 'https://www.app.tunitech-engineering.com',
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'https://www.app.tunitech-engineering.com',
+    //baseURL: 'http://127.0.0.1:8000/',
   })
   // request
 
@@ -65,29 +72,27 @@ const AppProvider = ({ children }) => {
   }
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
-    dispatch({ type: SETUP_USER_BEGIN });
+    dispatch({ type: SETUP_USER_BEGIN })
     try {
-        const { data } = await authFetch.post(`${endPoint}`, currentUser);
+      const { data } = await authFetch.post(`${endPoint}`, currentUser)
+      //console.log(data.user)
+      const user = data.user
 
-        const { user } = data;
-        dispatch({
-            type: SETUP_USER_SUCCESS,
-            payload: { user, alertText },
-        });
-        
-        window.location.href = "/application";  // Redirecting to '/application'
-
+      dispatch({
+        type: SETUP_USER_SUCCESS,
+        payload: { user, alertText },
+      })
     } catch (error) {
-        dispatch({
-            type: SETUP_USER_ERROR,
-            payload: { msg: error.response.data.msg },
-        });
+      dispatch({
+        type: SETUP_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      })
     }
-    clearAlert();
-};
+    clearAlert()
+  }
 
   const logoutUser = async () => {
-    await authFetch.get('/logout')
+    // await authFetch.post('/api/logout')
     dispatch({ type: LOGOUT_USER })
   }
 
@@ -112,6 +117,8 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await authFetch.get(url)
 
+      console.log(data)
+
       const { formations, totalItems, pagesCount } = data
 
       const totalFormations = totalItems
@@ -126,13 +133,11 @@ const AppProvider = ({ children }) => {
         },
       })
     } catch (error) {
-      // logoutUser()
+      logoutUser()
     }
     clearAlert()
   }
   const getAttestations = async () => {
-
-
     let url = `api/attestations`
 
     dispatch({ type: GET_ATTESTATIONS_BEGIN })
@@ -157,6 +162,35 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+
+  const startEditFormation = async (id) => {
+    dispatch({
+      type: EDIT_FORMATION_BEGIN,
+    })
+    const data = await authFetch.get(`/api/formations/${id}`)
+    const formation = data.data
+
+    dispatch({
+      type: EDIT_FORMATION_SUCCESS,
+      payload: {
+        formationToEdit: formation,
+      },
+    })
+  }
+
+  const deleteFormation = async (id) => {
+    let url = `/api/formations/${id}`
+    dispatch({
+      type: DELETE_FORMATION_BEGIN,
+    })
+    const res = await authFetch.delete(`/api/formations/${id}`)
+    console.log(res)
+    getFormations()
+    dispatch({
+      type: DELETE_FORMATION_SUCCESS,
+    })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -168,7 +202,9 @@ const AppProvider = ({ children }) => {
         clearValues,
         setupUser,
         getFormations,
-        getAttestations
+        getAttestations,
+        startEditFormation,
+        deleteFormation,
       }}
     >
       {children}

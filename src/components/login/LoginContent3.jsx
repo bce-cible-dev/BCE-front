@@ -6,10 +6,8 @@ import ErrorMessage from '../error/ErrorMessage'
 import { useAppContext } from '../../context/appContext'
 
 const initialState = {
-  // name: '',
   username: '',
   password: '',
-  // isMember: true,
 }
 
 const LoginContent3 = () => {
@@ -19,11 +17,6 @@ const LoginContent3 = () => {
   const [values, setValues] = useState(initialState)
   const { alertType, alertText, showAlert, setupUser, user, displayAlert } =
     useAppContext()
-
-  //   const user = {
-  //     username: 'test@gmail.com',
-  //     token: 'token',
-  //   }
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -37,7 +30,7 @@ const LoginContent3 = () => {
       return
     }
     const currentUser = { username, password }
-    console.log(currentUser)
+
     // if (isMember) {
     setupUser({
       currentUser,
