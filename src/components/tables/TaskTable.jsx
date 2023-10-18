@@ -52,7 +52,7 @@ const TaskTable = () => {
                   
                   }) => ( 
                     <tr key={id}>
-                    
+                      <td>{id}</td>
                       <td>{client}</td>
                       <td>{user}</td>
                       <td>
