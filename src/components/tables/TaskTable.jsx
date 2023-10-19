@@ -1,18 +1,56 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 //import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useAppContext } from '../../context/appContext'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
+const MySwal = withReactContent(Swal)
 const TaskTable = () => {
-    const formatDate = (dateStr) => {
-        const date = new Date(dateStr);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');  // Ajoute un zéro devant si nécessaire
-        const day = date.getDate().toString().padStart(2, '0');  // Ajoute un zéro devant si nécessaire
-        return `${day}-${month}-${year}`;
-    };
+  
     const { attestations, getAttestations } = useAppContext();
-
+    const handleButton2Click = (alertType) => {
+      switch (alertType) {
+        case 'saPosition':
+          MySwal.fire({
+            position: "center",
+            icon: "success",
+            title: "Generation with success",
+            showConfirmButton: !1,
+            timer: 1000,
+            showCloseButton: !0,
+            closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+            customClass: {
+                closeButton: 'btn btn-sm btn-icon btn-danger',
+            },
+            
+        })
+       
+          break;}}
+    const generateAttestations = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/generate/attestation/${id}`
+        , {
+          method: "GET", // ou "POST" si nécessaire
+          headers: {
+            "Content-Type": "application/json",
+            // Ajoutez ici d'autres entêtes si nécessaire (comme des tokens d'authentification)
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+           handleButton2Click('saPosition');
+           window.location.reload();
+          console.log(data); // Traitement des données reçues ou autre logique
+          // Par exemple, affichez une notification à l'utilisateur que les attestations ont été créées
+        } else {
+          console.error("Erreur lors de la création des attestations:", await response.text());
+        }
+      } catch (error) {
+        console.error("Erreur lors de l'appel à l'API:", error);
+      }
+    };
     useEffect(() => {
         getAttestations()
     }, []);
@@ -74,17 +112,15 @@ const TaskTable = () => {
                 <td>
                 <div className="btn-box">
                 {etat == 1 ? 
-                <spa className="btn btn-sm btn-icon btn-default ">
+                <button className="btn btn-sm btn-icon btn-default ">
              
                     <i className="fa-light fa-print" style={{color: 'white'}}></i> 
-                </spa>:  <a 
-            className="btn btn-sm btn-icon btn-success"
-            href={`http://127.0.0.1:8000/api/generate/attestation/${id}`} 
-            target='_blank'
-            rel='noopener noreferrer'
+                </button>:  <button 
+            className="btn btn-sm btn-icon btn-success"  onClick={() => generateAttestations(id)}
+      
         >
                     <i className="fa-light fa-print" style={{color: 'white'}}></i> 
-                </a>}
+                </button>}
                     <button
                     className="btn btn-sm btn-icon btn-danger"
                   

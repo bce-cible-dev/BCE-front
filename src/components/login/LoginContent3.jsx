@@ -59,7 +59,7 @@ const LoginContent3 = () => {
         <div className='d-flex justify-content-end'>
           <div className='login-body'>
             <div className='top d-flex justify-content-between align-items-center'>
-              <div className='logo'>
+              <div className='logo' style={{padding: "5%"}}>
                 <img
                   src={`${
                     isLightTheme

@@ -1,6 +1,10 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
+
+const MySwal = withReactContent(Swal)
 //import { useHistory } from 'react-router-dom';
 const FileInputSectionFormation = () => {
  // const history = useHistory();
@@ -8,7 +12,24 @@ const FileInputSectionFormation = () => {
   const [file, setFile] = useState()
   const [progress, setProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
-
+  const handleButtonClick = (alertType) => {
+    switch (alertType) {
+      case 'saPosition':
+        MySwal.fire({
+          position: "center",
+          icon: "success",
+          title: "File imperted with success",
+          showConfirmButton: !1,
+          timer: 8000,
+          showCloseButton: !0,
+          closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+          customClass: {
+              closeButton: 'btn btn-sm btn-icon btn-danger',
+          },
+          
+      })
+     
+        break;}}
   const handleUpload = () => {
     if (!file) {
       console.log('No file selected')
@@ -34,7 +55,8 @@ const FileInputSectionFormation = () => {
         if (fileInput) {
           fileInput.value = ''
         }
-        console.log(res.data.message)
+        console.log(res.data.message);
+       
       })
       .catch((err) => console.log(err))
   }
@@ -43,9 +65,13 @@ const FileInputSectionFormation = () => {
     if (isUploading) {
       const progressBarTimeout = setTimeout(() => {
         setIsUploading(false);
-        window.location.reload(); 
+        handleButtonClick('saPosition');
+        window.location.reload( );
+       
+       
+       
      
-      }, 4000)
+      }, 5000)
 
       return () => {
         clearTimeout(progressBarTimeout)

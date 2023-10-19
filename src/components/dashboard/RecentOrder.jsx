@@ -20,6 +20,7 @@ const RecentOrder = () => {
 
   useEffect(() => {
     getFormations()
+    console.log( getFormations());
   }, [])
 
   return (
@@ -40,10 +41,10 @@ const RecentOrder = () => {
                 <tr>
                   <th>ID</th>
                   <th>Client</th>
-                  <th>Etudiant</th>
+                  <th>User</th>
                   <th>Modules</th>
                   <th>Date de fin</th>
-                  <th>Crédit</th>
+               
 
                   <th>Action</th>
                 </tr>
@@ -55,7 +56,7 @@ const RecentOrder = () => {
                     client,
                     etudiant,
                     dateCompletion,
-                    credit,
+                 
                     module,
                   }) => (
                     <tr key={id + 1}>
@@ -64,7 +65,7 @@ const RecentOrder = () => {
                       <td>{etudiant}</td>
                       <td>{module}</td>
                       <td>{dateCompletion}</td>
-                      <td>{credit}</td>
+                     
                       {/* <td>$05.22</td>
                       <td>
                       <span className='badge bg-success'>Paid</span>

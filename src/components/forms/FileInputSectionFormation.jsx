@@ -1,11 +1,32 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
+
+const MySwal = withReactContent(Swal)
 const FileInputSectionFormation = () => {
   const [file, setFile] = useState()
   const [progress, setProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
-
+  const handleButtonClick = (alertType) => {
+    switch (alertType) {
+      case 'saPosition':
+        MySwal.fire({
+          position: "center",
+          icon: "success",
+          title: "File imperted with success",
+          showConfirmButton: !1,
+          timer: 8000,
+          showCloseButton: !0,
+          closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+          customClass: {
+              closeButton: 'btn btn-sm btn-icon btn-danger',
+          },
+          
+      })
+     
+        break;}}
   const handleUpload = () => {
     if (!file) {
       console.log('No file selected')
@@ -40,7 +61,9 @@ const FileInputSectionFormation = () => {
     if (isUploading) {
       const progressBarTimeout = setTimeout(() => {
         setIsUploading(false);
-        window.location.reload(); 
+        
+        handleButtonClick('saPosition');
+        window.location.reload( );
       }, 3000)
 
       return () => {
