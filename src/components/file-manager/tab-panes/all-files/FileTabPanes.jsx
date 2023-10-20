@@ -3,8 +3,8 @@ import { DigiContext } from '../../../../context/DigiContext'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 import { Link } from 'react-router-dom'
 
-const RecentFileSection = ({state,title}) => {
-    const {handleFileDetailsModalShow,handleMobileFileManagerBtn} = useContext(DigiContext)
+const AttestationFileSection = ({state,title}) => {
+    const {handleFileDetailsModalShow,handleMobileAttestationsPdfBtn} = useContext(DigiContext)
     const [isView,setIsView] = useState(state)
     const handleListView = () => {
         setIsView(true)
@@ -74,7 +74,7 @@ const RecentFileSection = ({state,title}) => {
     <div className="panel">
         <div className="panel-header">
             <div className="d-flex align-items-center gap-1">
-                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileFileManagerBtn}><i className="fa-light fa-bars"></i></button>
+                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileAttestationsPdfBtn}><i className="fa-light fa-bars"></i></button>
                 <h5>{title}</h5>
             </div>
             <div className="btn-box">
@@ -507,4 +507,4 @@ const RecentFileSection = ({state,title}) => {
   )
 }
 
-export default RecentFileSection
+export default AttestationFileSection

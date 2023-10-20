@@ -386,25 +386,25 @@ const DigiContextProvider = ({ children }) => {
   }
 
   // Add new task modal
-  const [showAddNewTaskModal, setShowAddNewTaskModal] = useState(false)
+  const [showAddNewAttestationsModal, setShowAddNewAttestationsModal] = useState(false)
 
-  const handleShowAddNewTaskModal = () => {
-    setShowAddNewTaskModal(true)
+  const handleShowAddNewAttestationsModal = () => {
+    setShowAddNewAttestationsModal(true)
   }
 
-  const handleCloseAddNewTaskModal = () => {
-    setShowAddNewTaskModal(false)
+  const handleCloseAddNewAttestationsModal = () => {
+    setShowAddNewAttestationsModal(false)
   }
 
   // View task modal
-  const [viewTaskModalOpen, setViewTaskModalOpen] = useState(false)
+  const [viewAttestationsModalOpen, setViewAttestationsModalOpen] = useState(false)
 
-  const handleViewTaskModalShow = () => {
-    setViewTaskModalOpen(true)
+  const handleViewAttestationsModalShow = () => {
+    setViewAttestationsModalOpen(true)
   }
 
-  const handleViewTaskModalClose = () => {
-    setViewTaskModalOpen(false)
+  const handleViewAttestationsModalClose = () => {
+    setViewAttestationsModalOpen(false)
   }
 
   // Dashboard part
@@ -1524,12 +1524,12 @@ const DigiContextProvider = ({ children }) => {
     }
   }, [mobileEmailBtn])
 
-  // mobile File Manager button
-  const [mobileFileManagerBtn, setMobileFileManagerBtn] = useState(false)
+  // mobile AttestationPdf button
+  const [mobileAttestationsPdfBtn, setMobileAttestationsPdfBtn] = useState(false)
 
-  const handleMobileFileManagerBtn = () => {
-    setMobileFileManagerBtn(
-      (prevMobileFileManagerBtn) => !prevMobileFileManagerBtn
+  const handleMobileAttestationsPdfBtn = () => {
+    setMobileAttestationsPdfBtn(
+      (prevMobileAttestationsPdfBtn) => !prevMobileAttestationsPdfBtn
     )
   }
   const fileManagerRef = useRef(null)
@@ -1538,11 +1538,11 @@ const DigiContextProvider = ({ children }) => {
     const handleClickOutside = (event) => {
       // Check if the sidebar is open and the clicked element is not inside the sidebar
       if (
-        mobileFileManagerBtn &&
+        mobileAttestationsPdfBtn &&
         !event.target.closest('.file-manager-sidebar') &&
         !event.target.closest('.mobile-file-manager-btn')
       ) {
-        setMobileFileManagerBtn(false)
+        setMobileAttestationsPdfBtn(false)
       }
     }
 
@@ -1553,7 +1553,7 @@ const DigiContextProvider = ({ children }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [mobileFileManagerBtn])
+  }, [mobileAttestationsPdfBtn])
   // small device
   const [smallDevice, setSmallDevice] = useState(false)
 
@@ -1898,12 +1898,12 @@ const DigiContextProvider = ({ children }) => {
         pageNumbers,
         scrollbarPosition,
         updateScrollbarPosition,
-        showAddNewTaskModal,
-        handleCloseAddNewTaskModal,
-        handleShowAddNewTaskModal,
-        viewTaskModalOpen,
-        handleViewTaskModalShow,
-        handleViewTaskModalClose,
+        showAddNewAttestationsModal,
+        handleCloseAddNewAttestationsModal,
+        handleShowAddNewAttestationsModal,
+        viewAttestationsModalOpen,
+        handleViewAttestationsModalShow,
+        handleViewAttestationsModalClose,
         state,
         toggleMainDropdown,
         toggleCrmDropdown,
@@ -2017,8 +2017,8 @@ const DigiContextProvider = ({ children }) => {
         handleDateRangeChange,
         mobileEmailBtn,
         handleMobileEmailBtn,
-        mobileFileManagerBtn,
-        handleMobileFileManagerBtn,
+        mobileAttestationsPdfBtn,
+        handleMobileAttestationsPdfBtn,
         smallDevice,
         isBelowLg,
         isRtl,

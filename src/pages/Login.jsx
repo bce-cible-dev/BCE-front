@@ -1,9 +1,11 @@
-import React from 'react'
-import LoginContent from '../components/login/LoginContent'
+//import React from 'react'
+import LoginContent from '../components/dashboard/LoginContent'
 
 const Login = () => {
   return (
-    <LoginContent/>
+    <>
+      <LoginContent />
+    </>
   )
 }
 

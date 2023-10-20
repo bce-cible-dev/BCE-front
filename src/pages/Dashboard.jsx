@@ -1,7 +1,7 @@
 import React from 'react'
 import Footer from '../components/footer/Footer'
 
-import RecentOrder from '../components/dashboard/RecentOrder'
+import Formations from '../components/dashboard/Formations'
 import FileInputSectionFormation from '../components/forms/FileInputSectionFormation'
 
 
@@ -12,7 +12,7 @@ const DashboardMainContent = () => {
       <FileInputSectionFormation />
       {/* <DashboardCards /> */}
       <div className='row m'>
-        <RecentOrder />
+        <Formations />
       </div>
       <Footer />
     </div>

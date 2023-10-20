@@ -6,7 +6,7 @@ import CkEditor from '../ck-editor/CkEditor'
 import Select from 'react-select'
 import axios from 'axios'
 
-const EditFormationTaskModal = () => {
+const EditFormationAttestationsModal = () => {
   const { show, handleClose } = useContext(DigiContext)
   const { formationToEdit, startEditFormation, formationId } = useAppContext()
 
@@ -46,54 +46,54 @@ const EditFormationTaskModal = () => {
         <Modal.Body>
           <div className='row g-3'>
             <div className='col-12'>
-              <label htmlFor='editTaskName' className='form-label'>
+              <label htmlFor='editAttestationsName' className='form-label'>
                 Client
               </label>
               <input
                 type='text'
-                id='editTaskName'
+                id='editAttestationsName'
                 className='form-control form-control-sm'
-                placeholder='Task Name'
+                placeholder='Attestations Name'
                 name='client'
                 value={values.client}
                 onChange={handleChange}
               />
             </div>
             <div className='col-12'>
-              <label htmlFor='editTaskName' className='form-label'>
+              <label htmlFor='editAttestationsName' className='form-label'>
                 Etudiant
               </label>
               <input
                 type='text'
-                id='editTaskName'
+                id='editAttestationsName'
                 className='form-control form-control-sm'
-                placeholder='Task Name'
+                placeholder='Attestations Name'
                 name='etudiant'
                 value={values.etudiant}
                 onChange={handleChange}
               />
             </div>
             <div className='col-12'>
-              <label htmlFor='editTaskName' className='form-label'>
+              <label htmlFor='editAttestationsName' className='form-label'>
                 Module
               </label>
               <input
                 type='text'
-                id='editTaskName'
+                id='editAttestationsName'
                 className='form-control form-control-sm'
-                placeholder='Task Name'
+                placeholder='Attestations Name'
                 name='module'
                 value={values.module}
                 onChange={handleChange}
               />
             </div>
             <div className='col-sm-6'>
-              <label htmlFor='editTaskEndDate' className='form-label'>
+              <label htmlFor='editAttestationsEndDate' className='form-label'>
                 Date de fin
               </label>
               <input
                 type='text'
-                id='editTaskEndDate'
+                id='editAttestationsEndDate'
                 className='form-control form-control-sm date-picker'
                 placeholder='Eg: 12 Feb, 20'
                 name='dateCompletion'
@@ -103,23 +103,23 @@ const EditFormationTaskModal = () => {
             </div>
 
             {/* <div className='col-12'>
-              <label htmlFor='editTaskAttchment' className='form-label'>
+              <label htmlFor='editAttestationsAttchment' className='form-label'>
                 Attach File
               </label>
               <input
                 type='file'
-                id='editTaskAttchment'
+                id='editAttestationsAttchment'
                 className='form-control form-control-sm'
                 multiple
               />
             </div>
             <div className='col-sm-6'>
-              <label htmlFor='editTaskStartDate' className='form-label'>
+              <label htmlFor='editAttestationsStartDate' className='form-label'>
                 Start Date
               </label>
               <input
                 type='text'
-                id='editTaskStartDate'
+                id='editAttestationsStartDate'
                 className='form-control form-control-sm date-picker'
                 placeholder='Eg: 12 Feb, 20'
                 value='12 Feb, 23'
@@ -127,12 +127,12 @@ const EditFormationTaskModal = () => {
               />
             </div>
             <div className='col-sm-6'>
-              <label htmlFor='editTaskEndDate' className='form-label'>
+              <label htmlFor='editAttestationsEndDate' className='form-label'>
                 End Date
               </label>
               <input
                 type='text'
-                id='editTaskEndDate'
+                id='editAttestationsEndDate'
                 className='form-control form-control-sm date-picker'
                 placeholder='Eg: 12 Feb, 20'
                 value='12 Mar, 23'
@@ -181,7 +181,7 @@ const EditFormationTaskModal = () => {
               />
             </div>
             <div className='col-12'>
-              <label className='form-label'>Task Description</label>
+              <label className='form-label'>Attestations Description</label>
               <CkEditor />
             </div> */}
           </div>
@@ -205,4 +205,4 @@ const EditFormationTaskModal = () => {
   )
 }
 
-export default EditFormationTaskModal
+export default EditFormationAttestationsModal

@@ -4,7 +4,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 import { Link } from 'react-router-dom'
 
 const StarredFileSection = () => {
-    const {handleFileDetailsModalShow,handleMobileFileManagerBtn} = useContext(DigiContext)
+    const {handleFileDetailsModalShow,handleMobileAttestationsPdfBtn} = useContext(DigiContext)
     const [isView,setIsView] = useState(true)
     const handleListView = () => {
         setIsView(true)
@@ -57,7 +57,7 @@ const StarredFileSection = () => {
     <div className="panel">
         <div className="panel-header">
             <div className="d-flex align-items-center gap-1">
-                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileFileManagerBtn}><i className="fa-light fa-bars"></i></button>
+                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileAttestationsPdfBtn}><i className="fa-light fa-bars"></i></button>
                 <h5>Starred Files</h5>
             </div>
             <div className="btn-box">

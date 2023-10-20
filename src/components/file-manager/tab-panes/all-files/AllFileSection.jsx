@@ -3,7 +3,7 @@ import { DigiContext } from '../../../../context/DigiContext'
 import { Link } from 'react-router-dom';
 
 const AllFileSection = () => {
-    const {handleNewFolderModalOpen,handleMobileFileManagerBtn,fileManagerRef} = useContext(DigiContext)
+    const {handleNewFolderModalOpen,handleMobileAttestationsPdfBtn,fileManagerRef} = useContext(DigiContext)
     const [dropdownBtn, setDropdownBtn] = useState({
         design: false,
         development: false,
@@ -63,7 +63,7 @@ const AllFileSection = () => {
     <div className="panel mb-30">
         <div className="panel-header">
             <div className="mobile-file-manager-btn d-flex align-items-center gap-1" ref={fileManagerRef}>
-                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileFileManagerBtn}><i className="fa-light fa-bars"></i></button>
+                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileAttestationsPdfBtn}><i className="fa-light fa-bars"></i></button>
                 <h5>All Files</h5>
             </div>
             <form className="file-search">

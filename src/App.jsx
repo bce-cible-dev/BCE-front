@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
-import Task from './pages/Task'
-import Leads from './pages/Leads'
-import FileManager from './pages/FileManager'
+import Attestations from './pages/Attestations'
+import Modules from './pages/Modules'
+import AttestationsPdf from './pages/AttestationPdf'
 import Layout from './components/layout/Layout'
-import Login from './pages/Login3'
+import Login from './pages/Login'
 function App() {
   return (
     <Router>
@@ -19,9 +19,9 @@ function App() {
           }
         >
           <Route path='/application' element={<Dashboard />} />
-          <Route path='/allAttestationPdfFile' element={<FileManager />} />
-          <Route path='/AttestationsList' element={<Task />} />
-          <Route path='/allModules' element={<Leads />} />
+          <Route path='/allAttestationPdfFile' element={<AttestationsPdf />} />
+          <Route path='/AttestationsList' element={<Attestations />} />
+          <Route path='/allModules' element={<Modules />} />
        
         </Route>
 

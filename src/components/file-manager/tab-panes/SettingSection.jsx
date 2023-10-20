@@ -4,7 +4,7 @@ import { DigiContext } from '../../../context/DigiContext';
 import { Link } from 'react-router-dom';
 import Invoices from '../../crm/Invoices'
 const SettingSection = () => {
-    const {handleMobileFileManagerBtn} = useContext(DigiContext)
+    const {handleMobileAttestationsPdfBtn} = useContext(DigiContext)
     const [activeTab, setActiveTab] = useState('general');
 
     const handleTabChange = (tab) => {
@@ -14,7 +14,7 @@ const SettingSection = () => {
     <div className="panel">
         <div className="panel-header">
             <div className="d-flex align-items-center gap-1">
-                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileFileManagerBtn}><i className="fa-light fa-bars"></i></button>
+                <button className="btn btn-sm btn-icon btn-primary file-manager-menu-btn d-lg-none" onClick={handleMobileAttestationsPdfBtn}><i className="fa-light fa-bars"></i></button>
                 <h5>Settings</h5>
             </div>
         </div>

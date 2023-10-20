@@ -128,7 +128,7 @@ const ComponentsPart = () => {
             <span className="nav-icon">
               <i className="fa-light fa-folder-open"></i>
             </span>{' '}
-            <span className="sidebar-txt">File Manager</span>
+            <span className="sidebar-txt">AttestationPdf</span>
           </NavLink>
         </li>
         <li className="sidebar-dropdown-item">

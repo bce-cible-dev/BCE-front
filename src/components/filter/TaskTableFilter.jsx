@@ -4,16 +4,16 @@ import { DigiContext } from '../../context/DigiContext';
 import SelectFilter from './SelectFilter';
 import DefinedRangeCalender from '../calender/DefinedRangeCalender';
 
-const TaskTableFilter = () => {
+const AttestationsTableFilter = () => {
     const { 
         tableFilterBtnOpen, 
         handleTableFilterBtn,
         tableFilterRef,
      } = useContext(DigiContext);
     const [checkboxes, setCheckboxes] = useState({
-        showTaskStatus: true,
+        showAttestationsStatus: true,
         showDateRange: true,
-        showTaskPriority: true,
+        showAttestationsPriority: true,
       });
     
       const handleChange = (e) => {
@@ -71,12 +71,12 @@ const TaskTableFilter = () => {
                                 <li className="dropdown-title">Filter Options</li>
                                 <li>
                                     <div className="form-check">
-                                        <Form.Check id="showTaskStatus" 
-                                        checked={checkboxes.showTaskStatus}
+                                        <Form.Check id="showAttestationsStatus" 
+                                        checked={checkboxes.showAttestationsStatus}
                                         onChange={handleChange}
                                         />                                          
-                                        <label className="form-check-label" htmlFor="filterTaskStatus">
-                                            Task Status
+                                        <label className="form-check-label" htmlFor="filterAttestationsStatus">
+                                            Attestations Status
                                         </label>
                                     </div>
                                 </li>
@@ -93,12 +93,12 @@ const TaskTableFilter = () => {
                                 </li>
                                 <li>
                                     <div className="form-check">
-                                        <Form.Check id="showTaskPriority" 
-                                        checked={checkboxes.showTaskPriority}
+                                        <Form.Check id="showAttestationsPriority" 
+                                        checked={checkboxes.showAttestationsPriority}
                                         onChange={handleChange}
                                         />  
-                                        <label className="form-check-label" htmlFor="filterTaskPriority">
-                                            Task Priority
+                                        <label className="form-check-label" htmlFor="filterAttestationsPriority">
+                                            Attestations Priority
                                         </label>
                                     </div>
                                 </li>
@@ -117,4 +117,4 @@ const TaskTableFilter = () => {
   )
 }
 
-export default TaskTableFilter
+export default AttestationsTableFilter

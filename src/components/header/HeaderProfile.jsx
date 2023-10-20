@@ -101,7 +101,7 @@ const HeaderProfile = () => {
                 <span className='dropdown-icon'>
                   <i className='fa-regular fa-calendar-check'></i>
                 </span>{' '}
-                Taskboard
+                Attestationsboard
               </Link>
             </li>
             <li>

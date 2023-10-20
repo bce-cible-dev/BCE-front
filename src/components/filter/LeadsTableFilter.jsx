@@ -2,7 +2,7 @@ import React from 'react'
 import SelectFilter from '../filter/SelectFilter';
 import { Form } from 'react-bootstrap';
 
-const LeadsTableFilter = () => {
+const ModulesTableFilter = () => {
   return (
     <div className="table-filter-option">
         <div className="row g-3">
@@ -27,4 +27,4 @@ const LeadsTableFilter = () => {
   )
 }
 
-export default LeadsTableFilter
+export default ModulesTableFilter
