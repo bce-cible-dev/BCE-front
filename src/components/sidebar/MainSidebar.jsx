@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 import DashboardPart from './DashboardPart';
-import AppsPart from './AppsPart';
+
 import PagesPart from './PagesPart';
-import ComponentsPart from './ComponentsPart';
+
 
 const MainSidebar = () => {
   const {
