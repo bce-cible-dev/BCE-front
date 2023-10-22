@@ -44,11 +44,18 @@ const AppContext = React.createContext()
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  const baseUrl = 'https://www.app.tunitech-engineering.com'
+  //baseURL: 'http://127.0.0.1:8000/'
+
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  }
   // axios
   const authFetch = axios.create({
-    //baseURL: 'https://www.app.tunitech-engineering.com',
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: baseUrl,
+    config,
   })
+
   // request
 
   // response
@@ -80,9 +87,14 @@ const AppProvider = ({ children }) => {
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
     try {
-      const { data } = await authFetch.post(`${endPoint}`, currentUser)
-      //console.log(data.user)
-      const user = data.user
+      const { data } = await axios.post(
+        `${baseUrl + '/' + endPoint}`,
+        currentUser
+      )
+      const { user, token } = data
+      localStorage.setItem('token', token)
+      console.log('user', user)
+      console.log('token', token)
 
       dispatch({
         type: SETUP_USER_SUCCESS,
@@ -91,7 +103,8 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: SETUP_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response },
+        // payload: { msg: error.response.data.msg },
       })
     }
     clearAlert()
@@ -196,32 +209,31 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  
-const getDocuments = async () => {
-  let url = `api/pdf/attestations`
+  const getDocuments = async () => {
+    let url = `api/pdf/attestations`
 
-  dispatch({ type: GET_DOCUMENTS_BEGIN })
-  try {
-    const { data } = await authFetch.get(url)
+    dispatch({ type: GET_DOCUMENTS_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
 
-    const { documents, totalItems, pagesCount } = data
+      const { documents, totalItems, pagesCount } = data
 
-    const totalDocuments = totalItems
-    const numOfPages = pagesCount
+      const totalDocuments = totalItems
+      const numOfPages = pagesCount
 
-    dispatch({
-      type: GET_DOCUMENTS_SUCCESS,
-      payload: {
-        documents,
-        totalDocuments,
-        numOfPages,
-      },
-    })
-  } catch (error) {
-    // logoutUser()
+      dispatch({
+        type: GET_DOCUMENTS_SUCCESS,
+        payload: {
+          documents,
+          totalDocuments,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
   }
-  clearAlert()
-}
   const startEditFormation = async (id) => {
     dispatch({
       type: EDIT_FORMATION_BEGIN,
