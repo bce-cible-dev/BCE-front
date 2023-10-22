@@ -39,7 +39,7 @@ const FileInputSectionFormation = () => {
 
     setIsUploading(true)
 
-    authFetch.post('http://127.0.0.1:8000/api/excel/import', fd, {
+    authFetch.post('/api/excel/import', fd, {
         onUploadProgress: (progressEvent) => {
           const completedPercentage = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total

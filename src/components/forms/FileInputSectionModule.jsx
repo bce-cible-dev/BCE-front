@@ -12,7 +12,7 @@ const FileInputSectionFormation = () => {
   const [file, setFile] = useState()
   const [progress, setProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
-  const handleButtonClick = (alertType) => {
+  const handleButtonClick =  (alertType) => {
     switch (alertType) {
       case 'saPosition':
         MySwal.fire({
@@ -30,7 +30,9 @@ const FileInputSectionFormation = () => {
       })
      
         break;}}
-  const handleUpload = () => {
+
+        
+  const handleUpload = async () => {
     if (!file) {
       console.log('No file selected')
       return
@@ -41,7 +43,7 @@ const FileInputSectionFormation = () => {
 
     setIsUploading(true)
 
-   authFetch.post('http://127.0.0.1:8000/api/module/excel/import', fd, {
+  await authFetch.post('/api/module/excel/import', fd, {
         onUploadProgress: (progressEvent) => {
           const completedPercentage = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
@@ -65,7 +67,7 @@ const FileInputSectionFormation = () => {
       const progressBarTimeout = setTimeout(() => {
         setIsUploading(false);
         handleButtonClick('saPosition');
-        window.location.reload( );
+        //window.location.reload( );
        
        
        
