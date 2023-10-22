@@ -44,16 +44,17 @@ const AppContext = React.createContext()
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const baseUrl = 'https://www.app.tunitech-engineering.com'
-  //baseURL: 'http://127.0.0.1:8000/'
+  //const baseUrl = 'https://www.app.tunitech-engineering.com'
+  const baseUrl = 'http://127.0.0.1:8000'
 
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}`,
+              ContentType : 'application/json'},
   }
   // axios
   const authFetch = axios.create({
     baseURL: baseUrl,
-    config,
+    headers: config.headers,
   })
 
   // request
@@ -93,6 +94,7 @@ const AppProvider = ({ children }) => {
       )
       const { user, token } = data
       localStorage.setItem('token', token)
+      localStorage.setItem('user',JSON.stringify(user))
       console.log('user', user)
       console.log('token', token)
 
@@ -110,9 +112,11 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+ 
   const logoutUser = async () => {
-    // await authFetch.post('/api/logout')
-    dispatch({ type: LOGOUT_USER })
+    localStorage.removeItem('token'); 
+    localStorage.removeUser('user'); // Remove token from local storage
+    dispatch({ type: LOGOUT_USER });
   }
 
   const handleChange = ({ name, value }) => {

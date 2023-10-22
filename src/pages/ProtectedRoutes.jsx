@@ -4,7 +4,8 @@ useAppContext
 
 const ProtectedRoutes = ({ children }) => {
   const { user } = useAppContext()
-  if (!user) {
+ const isLoggedIn = user || localStorage.getItem('user')
+  if (!isLoggedIn) {
     return <Navigate to='/' />
   }
   return children

@@ -1699,33 +1699,33 @@ const DigiContextProvider = ({ children }) => {
   const [lastInputCalculatorIsSymbol, setLastInputCalculatorIsSymbol] =
     useState(false)
   const [hasCalculated, setHasCalculated] = useState(false)
-  useEffect(() => {
-    const handleKeydown = (e) => {
-      if (
-        e.key === '=' ||
-        e.key === 'Enter' ||
-        e.key === 'Escape' ||
-        (e.key >= '0' && e.key <= '9') ||
-        ['+', '-', '*', '/'].includes(e.key)
-      ) {
-        e.preventDefault()
+  // useEffect(() => {
+  //   const handleKeydown = (e) => {
+  //     if (
+  //       e.key === '=' ||
+  //       e.key === 'Enter' ||
+  //       e.key === 'Escape' ||
+  //       (e.key >= '0' && e.key <= '9') ||
+  //       ['+', '-', '*', '/'].includes(e.key)
+  //     ) {
+  //       e.preventDefault()
 
-        if (e.key === '=' || e.key === 'Enter') {
-          handleEqual()
-        } else if (e.key === 'Escape') {
-          setInputCalculator('')
-        } else {
-          handleInputCalculator(e.key)
-        }
-      }
-    }
+  //       if (e.key === '=' || e.key === 'Enter') {
+  //         handleEqual()
+  //       } else if (e.key === 'Escape') {
+  //         setInputCalculator('')
+  //       } else {
+  //         handleInputCalculator(e.key)
+  //       }
+  //     }
+  //   }
 
-    document.addEventListener('keydown', handleKeydown)
+  //  // document.addEventListener('keydown', handleKeydown)
 
-    return () => {
-      document.removeEventListener('keydown', handleKeydown)
-    }
-  }, [inputCalculator])
+  //   return () => {
+  //     document.removeEventListener('keydown', handleKeydown)
+  //   }
+  // }, [inputCalculator])
 
   const handleInputCalculator = (num) => {
     if (isSymbol(num) && lastInputCalculatorIsSymbol) {

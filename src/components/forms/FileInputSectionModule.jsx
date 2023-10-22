@@ -1,12 +1,12 @@
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-
+import { useAppContext } from '../../context/appContext'
 
 const MySwal = withReactContent(Swal)
 //import { useHistory } from 'react-router-dom';
 const FileInputSectionFormation = () => {
+  const {authFetch} = useAppContext()
  // const history = useHistory();
 
   const [file, setFile] = useState()
@@ -41,8 +41,7 @@ const FileInputSectionFormation = () => {
 
     setIsUploading(true)
 
-    axios
-      .post('http://127.0.0.1:8000/api/module/excel/import', fd, {
+   authFetch.post('http://127.0.0.1:8000/api/module/excel/import', fd, {
         onUploadProgress: (progressEvent) => {
           const completedPercentage = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
