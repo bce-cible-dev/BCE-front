@@ -1,17 +1,17 @@
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
-import  { useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { DigiContext } from '../../context/DigiContext'
 
 import EditFormationModal from '../modal/EditFormationModal'
-
+//const [page, setPage] = useState(1);
 const Formations = () => {
   const {
     formations,
     getFormations,
-    numOfPages,
-    page,
+    numOfPages = 0,
+    page = 1,
     deleteFormation,
     prepareEditFormation,
   } = useAppContext()
@@ -20,7 +20,7 @@ const Formations = () => {
 
   useEffect(() => {
     getFormations()
-    console.log( getFormations());
+    console.log(getFormations());
   }, [])
 
   return (
@@ -44,7 +44,7 @@ const Formations = () => {
                   <th>User</th>
                   <th>Modules</th>
                   <th>Date de fin</th>
-               
+
 
                   <th>Action</th>
                 </tr>
@@ -56,7 +56,7 @@ const Formations = () => {
                     client,
                     etudiant,
                     dateCompletion,
-                 
+
                     module,
                   }) => (
                     <tr key={id + 1}>
@@ -65,7 +65,7 @@ const Formations = () => {
                       <td>{etudiant}</td>
                       <td>{module}</td>
                       <td>{dateCompletion}</td>
-                     
+
                       {/* <td>$05.22</td>
                       <td>
                       <span className='badge bg-success'>Paid</span>
@@ -94,22 +94,36 @@ const Formations = () => {
             </table>
           </OverlayScrollbarsComponent>
           <div className='table-bottom-control'>
-            <div className='dataTables_info'>
-              {' '}
-              Page {page} sur {numOfPages}
-            </div>
-            <div className='dataTables_paginate paging_simple_numbers'>
-              <Link className='btn btn-primary previous disabled'>
-                <i className='fa-light fa-angle-left'></i>
-              </Link>
-              <span>
-                <Link className='btn btn-primary current'>{page}</Link>
-              </span>
-              <Link className='btn btn-primary next disabled'>
-                <i className='fa-light fa-angle-right'></i>
-              </Link>
-            </div>
-          </div>
+    <div className='dataTables_info'>
+        Page {page} of {numOfPages}
+    </div>
+    <div className='dataTables_paginate paging_simple_numbers'>
+        <Link 
+            className={`btn btn-primary previous ${page === 1 ? 'disabled' : ''}`} 
+            onClick={() => {
+                if (page > 1) {
+                    getFormations(page - 1); 
+                }
+            }}
+        >
+            <i className='fa-light fa-angle-left'></i>
+        </Link>
+        <span>
+            <Link className='btn btn-primary current'>{page}</Link>
+        </span>
+        <Link 
+            className={`btn btn-primary next ${page === numOfPages ? 'disabled' : ''}`} 
+            onClick={() => {
+                if (page < numOfPages) {
+                    getFormations(page + 1);
+                }
+            }}
+        >
+            <i className='fa-light fa-angle-right'></i>
+        </Link>
+    </div>
+</div>
+
         </div>
       </div>
     </div>

@@ -86,17 +86,30 @@ const ModulesTable = () => {
     </OverlayScrollbarsComponent>
     <div className='table-bottom-control'>
             <div className='dataTables_info'>
-              {' '}
-              Page {page} sur {numOfPages}
+              Page {page} of {numOfPages}
             </div>
             <div className='dataTables_paginate paging_simple_numbers'>
-              <Link className='btn btn-primary previous disabled'>
+              <Link
+                className={`btn btn-primary previous ${page === 1 ? 'disabled' : ''}`}
+                onClick={() => {
+                  if (page > 1) {
+                    getFormations(page - 1);  // Assuming you have this function to fetch the previous page
+                  }
+                }}
+              >
                 <i className='fa-light fa-angle-left'></i>
               </Link>
               <span>
                 <Link className='btn btn-primary current'>{page}</Link>
               </span>
-              <Link className='btn btn-primary next disabled'>
+              <Link
+                className={`btn btn-primary next ${page === numOfPages ? 'disabled' : ''}`}
+                onClick={() => {
+                  if (page < numOfPages) {
+                    getFormations(page + 1);  // Assuming you have this function to fetch the next page
+                  }
+                }}
+              >
                 <i className='fa-light fa-angle-right'></i>
               </Link>
             </div>

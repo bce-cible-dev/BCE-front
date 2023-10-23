@@ -1,42 +1,37 @@
 import { useEffect } from 'react';
 //import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import { useAppContext } from '../../context/appContext'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { useAppContext } from '../../context/appContext'
 
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
-  
-    const { attestations, getAttestations } = useAppContext();
-    const handleButton2Click = (alertType) => {
-      switch (alertType) {
-        case 'saPosition':
-          MySwal.fire({
-            position: "center",
-            icon: "success",
-            title: "Generation with success",
-            showConfirmButton: !1,
-            timer: 1000,
-            showCloseButton: !0,
-            closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
-            customClass: {
-                closeButton: 'btn btn-sm btn-icon btn-danger',
-            },
-            
-        })
-       
-          break;}}
+  const handleButton2Click = (alertType) => {
+    switch (alertType) {
+      case 'saPosition':
+        MySwal.fire({
+          position: "center",
+          icon: "success",
+          title: "Generation with success",
+          showConfirmButton: !1,
+          timer: 1000,
+          showCloseButton: !0,
+          closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+          customClass: {
+              closeButton: 'btn btn-sm btn-icon btn-danger',
+          },
+          
+      })
+     
+        break;}}
+
+const { authFetch, attestations, getAttestations } = useAppContext();
+
     const generateAttestations = async (id) => {
       try {
-        const response = await fetch(`http://localhost:8000/api/generate/attestation/${id}`
-        , {
-          method: "GET", // ou "POST" si nécessaire
-          headers: {
-            "Content-Type": "application/json",
-            // Ajoutez ici d'autres entêtes si nécessaire (comme des tokens d'authentification)
-          },
-        });
+        const response = await authFetch.get(`/api/generate/attestation/${id}`);
+        // Handle the response...
   
         if (response.ok) {
           const data = await response.json();
@@ -95,7 +90,7 @@ const AttestationsTable = () => {
                       <td>{user}</td>
                       <td>
                         {modules.map((module, index) => (
-                          <div key={index}>{module.length > 80 ? module.slice(0, 70) + '...' : module}</div>
+                          <div key={index}>{module.length > 50 ? module.slice(0, 49) + '...' : module}</div>
                         ))}
                     </td>
                        <td>{credit}</td>
@@ -103,7 +98,7 @@ const AttestationsTable = () => {
                       <td>
                         {etat}
                       {etat == 1 ?
-                      <a href={`http://127.0.0.1:8000${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" class="file-icon" alt="Image" /></a>
+                      <a href={`http://127.0.0.1:8000${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" className="file-icon" alt="Image" /></a>
                 
                         : 
                         <span className="badge bg-default">---</span>

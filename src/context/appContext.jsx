@@ -126,40 +126,36 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES })
   }
 
-  const getFormations = async () => {
-    // const { page, search, searchStatus, searchType, sort } = state
+  //get Formations
+  const getFormations = async (pageNumber = 1) => {  // Default to page 1 if no page number is provided
 
-    // let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
-    // if (search) {
-    //   url = url + `&search=${search}`
-    // }
-
-    let url = `api/formations`
+    let url = `api/formations?page=${pageNumber}`;  // Add the page query parameter to the URL
 
     dispatch({ type: GET_FORMATIONS_BEGIN })
     try {
-      const { data } = await authFetch.get(url)
+        const { data } = await authFetch.get(url)
 
-      console.log(data)
+        console.log(data)
 
-      const { formations, totalItems, pagesCount } = data
+        const { formations, totalItems, pagesCount } = data
 
-      const totalFormations = totalItems
-      const numOfPages = pagesCount
+        const totalFormations = totalItems
+        const numOfPages = pagesCount
 
-      dispatch({
-        type: GET_FORMATIONS_SUCCESS,
-        payload: {
-          formations,
-          totalFormations,
-          numOfPages,
-        },
-      })
+        dispatch({
+            type: GET_FORMATIONS_SUCCESS,
+            payload: {
+                formations,
+                totalFormations,
+                numOfPages,
+            },
+        })
     } catch (error) {
-      logoutUser()
+        logoutUser()
     }
     clearAlert()
-  }
+}
+
 
   const getAttestations = async () => {
     let url = `api/attestations`

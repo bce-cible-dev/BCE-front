@@ -67,7 +67,7 @@ const FileInputSectionFormation = () => {
       const progressBarTimeout = setTimeout(() => {
         setIsUploading(false);
         handleButtonClick('saPosition');
-        //window.location.reload( );
+       window.location.reload( );
        
        
        

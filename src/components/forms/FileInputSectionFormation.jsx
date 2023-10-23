@@ -63,7 +63,7 @@ const FileInputSectionFormation = () => {
         setIsUploading(false);
         
         handleButtonClick('saPosition');
-       // window.location.reload( );
+      window.location.reload( );
       }, 3000)
 
       return () => {
