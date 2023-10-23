@@ -157,30 +157,35 @@ const AppProvider = ({ children }) => {
 }
 
 
-  const getAttestations = async () => {
-    let url = `api/attestations`
+const getAttestations = async (startDate, endDate) => {
+  let url = `api/attestations`;
 
-    dispatch({ type: GET_ATTESTATIONS_BEGIN })
+  // If startDate and endDate are provided, append them to the URL.
+  if (startDate && endDate) {
+      url += `?startDate=${startDate}&endDate=${endDate}`;
+  }
+
+  dispatch({ type: GET_ATTESTATIONS_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
+        const { data } = await authFetch.get(url);
 
-      const { attestations, totalItems, pagesCount } = data
+        const { attestations, totalItems, pagesCount } = data;
 
-      const totalAttestations = totalItems
-      const numOfPages = pagesCount
+        const totalAttestations = totalItems;
+        const numOfPages = pagesCount;
 
-      dispatch({
-        type: GET_ATTESTATIONS_SUCCESS,
-        payload: {
-          attestations,
-          totalAttestations,
-          numOfPages,
-        },
-      })
+        dispatch({
+            type: GET_ATTESTATIONS_SUCCESS,
+            payload: {
+                attestations,
+                totalAttestations,
+                numOfPages,
+            },
+        });
     } catch (error) {
       // logoutUser()
     }
-    clearAlert()
+    clearAlert();
   }
 
   const getModules = async () => {

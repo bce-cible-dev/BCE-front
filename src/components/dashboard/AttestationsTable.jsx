@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 //import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useAppContext } from '../../context/appContext'
-
+import Form from 'react-bootstrap/Form';
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
   const handleButton2Click = (alertType) => {
@@ -27,14 +27,30 @@ const AttestationsTable = () => {
         break;}}
 
 const { authFetch, attestations, getAttestations } = useAppContext();
+const [startDate, setStartDate] = useState(null);
+const [endDate, setEndDate] = useState(null);
+const [editingRowId, setEditingRowId] = useState(null);
 
+    const handleStartDateChange = (e) => {
+        setStartDate(e.target.value);
+        console.log('start',e.target.value);
+    };
+
+    const handleEndDateChange = (e) => {
+        setEndDate(e.target.value);
+        console.log('end',e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        getAttestations(startDate, endDate);
+    };
     const generateAttestations = async (id) => {
       try {
         const response = await authFetch.get(`/api/generate/attestation/${id}`);
         // Handle the response...
-  
-        if (response.ok) {
-          const data = await response.json();
+        if (response.status === 200) {
+          const data = response.data;
            handleButton2Click('saPosition');
            window.location.reload();
           console.log(data); // Traitement des données reçues ou autre logique
@@ -46,6 +62,25 @@ const { authFetch, attestations, getAttestations } = useAppContext();
         console.error("Erreur lors de l'appel à l'API:", error);
       }
     };
+    const handleDateChange = (e, id) => {
+      const newDate = e.target.value;
+  
+      // Here, update the attestations state or send the change to the backend.
+      // For now, I'll show how you might update the state:
+  
+      const updatedAttestations = attestations.map(attestation => {
+          if (attestation.id === id) {
+              return {...attestation, dateFormations: newDate};
+          }
+          return attestation;
+      });
+      
+      setAttestations(updatedAttestations); // Assuming you have a state setter for attestations.
+  };
+    const formatDate = (dateString) => {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+  }
     useEffect(() => {
         getAttestations()
     }, []);
@@ -53,6 +88,46 @@ const { authFetch, attestations, getAttestations } = useAppContext();
   return (
     <>
     <OverlayScrollbarsComponent>
+
+    <div className="table-filter-option task-table-header">
+            <Form onSubmit={handleSubmit}>
+                <div className="row g-3">
+                    <div className="col-xl-10 col-md-10 col-10 col-xs-12">
+                        <div className="row g-3">
+                            <div className="col-md-4">
+                                <Form.Label htmlFor="startDate">Date Start</Form.Label>
+                                <Form.Control 
+                                    type="date"
+                                    id="startDate"
+                                    value={startDate}
+                                    onChange={handleStartDateChange}
+                                />
+                            </div>
+                            <div className="col-md-4">
+                                <Form.Label htmlFor="endDate">Date End</Form.Label>
+                                <Form.Control 
+                                    type="date"
+                                    id="endDate"
+                                    value={endDate}
+                                    onChange={handleEndDateChange}
+                                />
+                            </div>
+                            <div className="col-md-4">
+                                <br />
+                                <button type="submit" className="btn btn-sm btn-primary">
+                                    <i className="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-2 col-md-2 col-2 col-xs-12 d-flex justify-content-end align-items-center">
+                        <div id="employeeTableLength">
+                            {/* Content for employeeTableLength */}
+                        </div>
+                    </div>
+                </div>
+            </Form>
+        </div>
         <table className="table table-dashed table-hover digi-dataTable task-table table-striped" id="taskTable">
             <thead>
                 <tr>
@@ -94,14 +169,28 @@ const { authFetch, attestations, getAttestations } = useAppContext();
                         ))}
                     </td>
                        <td>{credit}</td>
-                      <td>30-{dateFormations}</td>
+                       <td>
+    {editingRowId === id ? (
+        <input 
+            type="date" 
+            value={dateFormations} 
+            onChange={(e) => handleDateChange(e, id)}
+        />
+    ) : (
+        formatDate(dateFormations)
+    )}
+</td>
                       <td>
                         {etat}
                       {etat == 1 ?
                       <a href={`http://127.0.0.1:8000${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" className="file-icon" alt="Image" /></a>
                 
                         : 
-                        <span className="badge bg-default">---</span>
+                        <i 
+                        className="fa-light fa-edit" 
+                        onClick={() => setEditingRowId(editingRowId === id ? null : id)}
+                        style={{ cursor: 'pointer', marginRight: '10px' }}
+                    ></i>
                          }
                         </td>
                 <td>
