@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useAppContext } from '../../context/appContext'
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
   const handleButton2Click = (alertType) => {
@@ -27,10 +28,53 @@ const AttestationsTable = () => {
         break;}}
 
 const { authFetch, attestations, getAttestations } = useAppContext();
+const [selectedAttestations, setSelectedAttestations] = useState([]);
 const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
 const [editingRowId, setEditingRowId] = useState(null);
 const [editedDate, setEditedDate] = useState("");
+
+const handleAttestationSelection = (id) => {
+    if (selectedAttestations.includes(id)) {
+        setSelectedAttestations((prev) => prev.filter((attestationId) => attestationId !== id));
+    } else {
+        setSelectedAttestations((prev) => [...prev, id]);
+    }
+};
+const handleSelectAll = () => {
+    if (selectedAttestations.length === attestations.length) {
+        setSelectedAttestations([]); // deselect all
+    } else {
+        setSelectedAttestations(attestations.map(a => a.id)); // select all
+    }
+};
+
+const handleExportSelected = async () => {
+    try {
+        const response = await authFetch.post(`/api/generateMultiplePdfs`, {
+           // ids: [1, 2, 3]
+            ids: selectedAttestations // Sending selected attestation IDs as an array
+        });
+        console.log(response);
+        if (response.status === 200) {
+            const data = response.data;
+            // Supposons que le serveur renvoie un chemin de fichier comme "C:\\Users\\...\\fichier.zip"
+            // Extraire le nom du fichier du chemin complet
+            const fileName = data.lien;
+            // Construire l'URL pour déclencher le téléchargement
+            const downloadUrl = `/api/download/${fileName}`;
+            // Rediriger vers cette URL pour initier le téléchargement
+            window.location = fileName.DownloadLink.slice(9);
+
+      
+        } else {
+            // Handle errors
+            console.error("Error exporting attestations:", response.data);
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+    }
+};
 
     const handleStartDateChange = (e) => {
         setStartDate(e.target.value);
@@ -76,26 +120,19 @@ const [editedDate, setEditedDate] = useState("");
           console.error("Date format is not 'yyyy-MM-dd'");
           return;
       }
-      
+      setEditedDate(dateValue)
       console.log(dateValue);
       updateDateFormation(id, dateValue);
       console.log('test update');
   };
-  
+ 
   const updateDateFormation = async (id, date) => {
     console.log('date',date);
     try {
-        const response = await authFetch(`/api/attestations/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                dateFormations: date
-            })
+        const response = await authFetch.put(`/api/attestations/${id}`, {
+                dateFormations: date 
         });
 
-      
         
         if (response.status === 200) {
           const data = response.data;
@@ -128,9 +165,10 @@ const [editedDate, setEditedDate] = useState("");
     <OverlayScrollbarsComponent>
 
     <div className="table-filter-option task-table-header">
-            <Form onSubmit={handleSubmit}>
+           
                 <div className="row g-3">
                     <div className="col-xl-10 col-md-10 col-10 col-xs-12">
+                    <Form onSubmit={handleSubmit}>
                         <div className="row g-3">
                             <div className="col-md-4">
                                 <Form.Label htmlFor="startDate">Date Start</Form.Label>
@@ -157,24 +195,33 @@ const [editedDate, setEditedDate] = useState("");
                                 </button>
                             </div>
                         </div>
+                        </Form>
                     </div>
                     <div className="col-xl-2 col-md-2 col-2 col-xs-12 d-flex justify-content-end align-items-center">
-                        <div id="employeeTableLength">
-                            {/* Content for employeeTableLength */}
-                        </div>
+                    <button onClick={handleExportSelected} className="btn btn-sm btn-danger">Exporter en ZIP </button>
+                        
                     </div>
                 </div>
-            </Form>
+           
         </div>
+     
+    
+
         <table className="table table-dashed table-hover digi-dataTable task-table table-striped" id="taskTable">
             <thead>
                 <tr>
                     <th className="no-sort">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" id="markAllModules"/>
-                        </div>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="checkbox" 
+                            id="markAllModules"
+                            checked={selectedAttestations.length === attestations.length}
+                            onChange={handleSelectAll}
+                        />
+                    </div>
                     </th>
-                 
+                    <th>Id</th>
                     <th>Client</th>
                     <th>User</th>
                     <th>Modules</th>
@@ -185,20 +232,19 @@ const [editedDate, setEditedDate] = useState("");
                 </tr>
             </thead>
             <tbody>
-            {attestations.map(
-                  ({
-                    id,
-                    client,
-                    user,
-                    modules,
-                    credit,
-                    dateFormations,
-                    path,
-                    etat,
-                  
-                  }) => ( 
-                    <tr key={id}>
-                      <td>{id}</td>
+{attestations.map(({ id, client, user, modules, credit, dateFormations, path, etat }) => ( 
+    <tr key={id}>
+        <td>
+            <div className="form-check">
+                <input 
+                    className="form-check-input" 
+                    type="checkbox" 
+                    checked={selectedAttestations.includes(id)}
+                    onChange={() => handleAttestationSelection(id)}
+                />
+            </div>
+        </td>
+        <td>{id}</td>
                       <td>{client}</td>
                       <td>{user}</td>
                       <td>
