@@ -30,6 +30,7 @@ const { authFetch, attestations, getAttestations } = useAppContext();
 const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
 const [editingRowId, setEditingRowId] = useState(null);
+const [editedDate, setEditedDate] = useState("");
 
     const handleStartDateChange = (e) => {
         setStartDate(e.target.value);
@@ -62,25 +63,62 @@ const [editingRowId, setEditingRowId] = useState(null);
         console.error("Erreur lors de l'appel à l'API:", error);
       }
     };
+
+    function formatDateToInputValue(isoDateString) {
+      return isoDateString.split("T")[0];
+    }
+    // Start Edit Function date
     const handleDateChange = (e, id) => {
-      const newDate = e.target.value;
-  
-      // Here, update the attestations state or send the change to the backend.
-      // For now, I'll show how you might update the state:
-  
-      const updatedAttestations = attestations.map(attestation => {
-          if (attestation.id === id) {
-              return {...attestation, dateFormations: newDate};
-          }
-          return attestation;
-      });
+      const dateValue = e.target.value;
       
-      setAttestations(updatedAttestations); // Assuming you have a state setter for attestations.
+      // Ensure the date format is correct
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+          console.error("Date format is not 'yyyy-MM-dd'");
+          return;
+      }
+      
+      console.log(dateValue);
+      updateDateFormation(id, dateValue);
+      console.log('test update');
   };
-    const formatDate = (dateString) => {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
-  }
+  
+  const updateDateFormation = async (id, date) => {
+    console.log('date',date);
+    try {
+        const response = await authFetch(`/api/attestations/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                dateFormations: date
+            })
+        });
+
+      
+        
+        if (response.status === 200) {
+          const data = response.data;
+          console.log('res', data);// Accessing the data directly
+            //console.log('res', data);
+            // You can also refresh the attestations from the server if needed
+            getAttestations();
+        } else {
+            console.error('Error updating date formation:', response.data); // Here too
+            // Handle the error (maybe display a message to the user or something similar)
+        }
+    } catch (error) {
+        console.error("Error in updateDateFormation:", error);
+    }
+};
+
+  //End Edit date
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
+    
     useEffect(() => {
         getAttestations()
     }, []);
@@ -170,16 +208,12 @@ const [editingRowId, setEditingRowId] = useState(null);
                     </td>
                        <td>{credit}</td>
                        <td>
-    {editingRowId === id ? (
-        <input 
-            type="date" 
-            value={dateFormations} 
-            onChange={(e) => handleDateChange(e, id)}
-        />
-    ) : (
-        formatDate(dateFormations)
-    )}
-</td>
+                        {editingRowId === id ? (
+                            <input type="date"  value={editedDate}  onChange={(e) => handleDateChange(e, id)}/> 
+                        ) : (
+                            formatDate(dateFormations)
+                        )}
+                    </td> 
                       <td>
                         {etat}
                       {etat == 1 ?
@@ -188,7 +222,11 @@ const [editingRowId, setEditingRowId] = useState(null);
                         : 
                         <i 
                         className="fa-light fa-edit" 
-                        onClick={() => setEditingRowId(editingRowId === id ? null : id)}
+                        onClick={() => {
+                            const formattedDate = formatDateToInputValue(dateFormations);
+                            setEditedDate(formattedDate);
+                            setEditingRowId(editingRowId === id ? null : id);
+                        }}
                         style={{ cursor: 'pointer', marginRight: '10px' }}
                     ></i>
                          }
