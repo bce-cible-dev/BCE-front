@@ -5,9 +5,11 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useAppContext } from '../../context/appContext'
 import Form from 'react-bootstrap/Form';
+import config from'../../config'
 import axios from 'axios';
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
+const baseUrl =config.BASE_URL
   const handleButton2Click = (alertType) => {
     switch (alertType) {
       case 'saPosition':
@@ -64,7 +66,7 @@ const handleExportSelected = async () => {
             const cleanedPath = data.lien.replace("BCE-back/public", "");
             const fileName = cleanedPath.split("\\").pop();
             // Construire l'URL pour déclencher le téléchargement
-            const downloadUrl = `http://127.0.0.1:8000/${fileName}`;
+            const downloadUrl =` ${baseUrl}/${fileName}`;
             // Rediriger vers cette URL pour initier le téléchargement
             window.location = downloadUrl;
             handleButton2Click('saPosition');
@@ -267,7 +269,7 @@ const handleExportSelected = async () => {
                       <td>
                         {etat}
                       {etat == 1 ?
-                      <a href={`http://127.0.0.1:8000${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" className="file-icon" alt="Image" /></a>
+                      <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" className="file-icon" alt="Image" /></a>
                 
                         : 
                         <i 

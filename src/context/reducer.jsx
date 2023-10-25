@@ -19,6 +19,8 @@ import {
   GET_MODULES_SUCCESS,
   GET_DOCUMENTS_BEGIN,
   GET_DOCUMENTS_SUCCESS,
+  GET_ETUDIANTS_BEGIN,
+  GET_ETUDIANTS_SUCCESS,
 } from './actions'
 import { initialState } from './appContext'
 
@@ -146,6 +148,22 @@ const reducer = (state, action) => {
         numOfPages: action.payload.numberOfPages,
         totalDocuments: action.payload.totalDocuments,
       }
+      //etudiant get
+  case GET_ETUDIANTS_BEGIN:
+  return {
+    ...state,
+    isLoading: true,
+    showAlert: false,
+  }
+
+case GET_ETUDIANTS_SUCCESS:
+  return {
+    ...state,
+    isLoading: false,
+    etudiants: action.payload.etudiants,
+    numOfPages: action.payload.numberOfPages,
+    totalEtudiants: action.payload.totalEtudiants,
+  }
 //editformation
     case EDIT_FORMATION_BEGIN:
       console.log(action.payload.formationId)

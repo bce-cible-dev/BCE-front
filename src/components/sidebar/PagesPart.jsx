@@ -1,7 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { DigiContext } from '../../context/DigiContext';
-
+import { useAppContext } from '../../context/appContext'
 const PagesPart = () => {
   const {
     pagesState,
@@ -17,6 +17,7 @@ const PagesPart = () => {
     isNavExpanded,
     isSmallScreen,
   } = useContext(DigiContext);
+  const {logoutUser } = useAppContext()
   const { 
     isMainDropdownOpen, 
     isSubDropdownOpen, 
@@ -39,24 +40,24 @@ const PagesPart = () => {
       </Link>
       <ul className={`sidebar-link-group ${layoutPosition.horizontal ? (dropdownOpen.pages ? 'd-block' : '') : (isMainDropdownOpen ? 'd-none' : '')}`}>       
     
-     <li className="sidebar-dropdown-item">
+     {/* <li className="sidebar-dropdown-item">
           <NavLink to="/application" className="sidebar-link">
             <span className="nav-icon">
               <i className="fa-light fa-light fa-user-cog"></i>
             </span>{' '}
             <span className="sidebar-txt"> Administrateurs</span>
           </NavLink>
-        </li>
-        <li className="sidebar-dropdown-item">
+        </li> */}
+        {/* <li className="sidebar-dropdown-item">
           <NavLink to="/application" className="sidebar-link">
             <span className="nav-icon">
               <i className="fa-light fa-compass-drafting"></i>
             </span>{' '}
             <span className="sidebar-txt"> Update Password</span>
           </NavLink>
-        </li>
+        </li> */}
         <li className="sidebar-dropdown-item">
-          <NavLink to="/application" className="sidebar-link">
+          <NavLink onClick={logoutUser} className="sidebar-link">
             <span className="nav-icon">
               <i className="fa-light fa-arrow-right-from-bracket"></i>
             </span>{' '}

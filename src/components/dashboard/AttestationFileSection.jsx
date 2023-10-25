@@ -3,9 +3,10 @@ import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 //import { Link } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
-
+import config from'../../config'
 
 const AttestationFileSection = ({state}) => {
+    const baseUrl =config.BASE_URL
     const { documents, getDocuments } =useAppContext();
     const {handleFileDetailsModalShow} = useContext(DigiContext)
     const [isView,setIsView] = useState(state)
@@ -53,11 +54,11 @@ const AttestationFileSection = ({state}) => {
                            <div className="file-manager-col" key={document.id}>
                          <div className="file-card">
                              <div className="part-img">
-                                 <a href={`http://127.0.0.1:8000${document.path}`} target='_blank' rel='noopener noreferrer' className="btn-flush" ><img src="assets/images/pdf.png" className="file-icon" alt="Image"/></a>
+                                 <a href={`${baseUrl}/${document.path}`} target='_blank' rel='noopener noreferrer' className="btn-flush" ><img src="assets/images/pdf.png" className="file-icon" alt="Image"/></a>
                              </div>
                              <div className="part-txt">
                                  <div className="d-flex justify-content-between">
-                                 <a href={`http://127.0.0.1:8000${document.path}`} target='_blank' rel='noopener noreferrer' className="btn-flush file-name"  >{document.user.replace(/\s+/g, '')}.pdf</a>
+                                 <a href={`${baseUrl}/${document.path}`} target='_blank' rel='noopener noreferrer' className="btn-flush file-name"  >{document.user.replace(/\s+/g, '')}.pdf</a>
                                      <span className="file-size">PDF file</span>
                                  </div>
                              </div>

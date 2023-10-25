@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { useState, useEffect, useReducer, useContext } from 'react'
 import reducer from './reducer'
+import config from'../config'
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -21,6 +22,8 @@ import {
   GET_MODULES_SUCCESS,
   GET_DOCUMENTS_BEGIN,
   GET_DOCUMENTS_SUCCESS,
+  GET_ETUDIANTS_BEGIN,
+  GET_ETUDIANTS_SUCCESS,
 } from './actions'
 
 const initialState = {
@@ -40,7 +43,7 @@ const initialState = {
 }
 
 const AppContext = React.createContext()
-
+const baseUrl =config.BASE_URL
 const AppProvider = ({ children }) => {
   const savedState = JSON.parse(localStorage.getItem('appliState'))
   const [state, dispatch] = useReducer(reducer, savedState || initialState)
@@ -49,8 +52,6 @@ const AppProvider = ({ children }) => {
     localStorage.setItem('appliState', JSON.stringify(state))
   }, [state])
 
-  const baseUrl = 'https://www.app.tunitech-engineering.com'
-  //const baseUrl = 'http://127.0.0.1:8000'
 
   const config = {
     headers: {
@@ -193,7 +194,31 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+  const getEtudiants = async () => {
+    let url = `api/etudiants`
 
+    dispatch({ type: GET_ETUDIANTS_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+
+      const { etudiants, totalItems, pagesCount } = data
+
+      const totalEtudiants = totalItems
+      const numOfPages = pagesCount
+
+      dispatch({
+        type: GET_ETUDIANTS_SUCCESS,
+        payload: {
+          etudiants,
+          totalEtudiants,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
   const getModules = async () => {
     let url = `api/modules`
 
@@ -288,6 +313,7 @@ const AppProvider = ({ children }) => {
         getAttestations,
         startEditFormation,
         deleteFormation,
+        getEtudiants,
         getModules,
         getDocuments,
       }}

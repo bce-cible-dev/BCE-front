@@ -60,13 +60,13 @@ const DashboardPart = () => {
         </li>
         <li className="sidebar-dropdown-item">
           <NavLink
-            to="/application"
+            to="/allEtudiants"
             className="sidebar-link"
           >
             <span className="nav-icon">
               <i className="fa-light fa-users"></i>
             </span>{' '}
-            <span className="sidebar-txt">Users</span>
+            <span className="sidebar-txt">Etudiants</span>
           </NavLink>
         </li>
 

@@ -2,6 +2,7 @@
 // import axios from 'axios'
 // import { useReducer } from 'react'
 // import reducer from './reducer'
+//import config from'../config'
 // import {
 //   DISPLAY_ALERT,
 //   CLEAR_ALERT,
@@ -24,8 +25,8 @@
 
 //   // axios
 //   const authFetch = axios.create({
-//    // baseURL: 'https://www.app.tunitech-engineering.com',
-//     baseURL: 'http://127.0.0.1:8000/',
+// 
+//     baseURL: config.baseurl,
 //   })
 //   // request
 //   // response

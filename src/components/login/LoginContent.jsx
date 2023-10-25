@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { DigiContext } from '../../context/DigiContext';
 
 const LoginContent = () => {
- const {passwordVisible, togglePasswordVisibility} = useContext(DigiContext)
+  const { passwordVisible, togglePasswordVisibility, errorMessage, setErrorMessage } = useContext(DigiContext);
 
   return (
     <div className="main-content login-panel">
@@ -13,12 +13,24 @@ const LoginContent = () => {
           <div className="logo">
             <img src="assets/images/logo-big.png" alt="Logo" />
           </div>
-          <Link to="/">
+          {/* <Link to="/">
             <i className="fa-duotone fa-house-chimney"></i>
-          </Link>
+          </Link> */}
         </div>
         <div className="bottom">
+      
           <h3 className="panel-title">Login</h3>
+          <div className="login-status"> {/* Conditional rendering of status messages */}
+        {errorMessage === "Login Successfully" && (
+          <div className="msg-success alert alert-success py-2 px-3 rounded mb-20 fs-14">
+            <i className="fa-regular fa-check me-2"></i> Login Successfully
+          </div>
+        )}
+        {errorMessage === "Invalid Username/Password" && (
+          <div className="msg-error alert alert-danger py-2 px-3 rounded mb-20 fs-14">
+            <i className="fa-regular fa-circle-exclamation me-2"></i> Invalid Username/Password
+          </div>
+        )}  </div>
           <form>
             <div className="input-group mb-30">
               <span className="input-group-text">
@@ -28,6 +40,7 @@ const LoginContent = () => {
                 type="text"
                 className="form-control"
                 placeholder="Username or email address"
+                onChange={() => setErrorMessage(null)}
               />
             </div>
             <div className="input-group mb-20">
@@ -38,6 +51,7 @@ const LoginContent = () => {
                 type={passwordVisible ? 'text' : 'password'}
                 className="form-control rounded-end"
                 placeholder="Password"
+                onChange={() => setErrorMessage(null)}
               />
               <Link
                 role="button"
