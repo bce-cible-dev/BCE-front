@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { useState, useReducer, useContext } from 'react'
+import { useState, useEffect, useReducer, useContext } from 'react'
 import reducer from './reducer'
 import {
   DISPLAY_ALERT,
@@ -42,14 +42,21 @@ const initialState = {
 const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const savedState = JSON.parse(localStorage.getItem('appliState'))
+  const [state, dispatch] = useReducer(reducer, savedState || initialState)
 
-  //const baseUrl = 'https://www.app.tunitech-engineering.com'
-  const baseUrl = 'http://127.0.0.1:8000'
+  useEffect(() => {
+    localStorage.setItem('appliState', JSON.stringify(state))
+  }, [state])
+
+  const baseUrl = 'https://www.app.tunitech-engineering.com'
+  //const baseUrl = 'http://127.0.0.1:8000'
 
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}`,
-              ContentType : 'application/json'},
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      ContentType: 'application/json',
+    },
   }
   // axios
   const authFetch = axios.create({
@@ -94,7 +101,7 @@ const AppProvider = ({ children }) => {
       )
       const { user, token } = data
       localStorage.setItem('token', token)
-      localStorage.setItem('user',JSON.stringify(user))
+
       console.log('user', user)
       console.log('token', token)
 
@@ -112,11 +119,10 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
- 
   const logoutUser = async () => {
-    localStorage.removeItem('token'); 
-    localStorage.removeUser('user'); // Remove token from local storage
-    dispatch({ type: LOGOUT_USER });
+    localStorage.removeItem('token')
+    // Remove token from local storage
+    dispatch({ type: LOGOUT_USER })
   }
 
   const handleChange = ({ name, value }) => {
@@ -127,65 +133,65 @@ const AppProvider = ({ children }) => {
   }
 
   //get Formations
-  const getFormations = async (pageNumber = 1) => {  // Default to page 1 if no page number is provided
+  const getFormations = async (pageNumber = 1) => {
+    // Default to page 1 if no page number is provided
 
-    let url = `api/formations?page=${pageNumber}`;  // Add the page query parameter to the URL
+    let url = `api/formations?page=${pageNumber}` // Add the page query parameter to the URL
 
     dispatch({ type: GET_FORMATIONS_BEGIN })
     try {
-        const { data } = await authFetch.get(url)
+      const { data } = await authFetch.get(url)
 
-        console.log(data)
+      console.log(data)
 
-        const { formations, totalItems, pagesCount } = data
+      const { formations, totalItems, pagesCount } = data
 
-        const totalFormations = totalItems
-        const numOfPages = pagesCount
+      const totalFormations = totalItems
+      const numOfPages = pagesCount
 
-        dispatch({
-            type: GET_FORMATIONS_SUCCESS,
-            payload: {
-                formations,
-                totalFormations,
-                numOfPages,
-            },
-        })
+      dispatch({
+        type: GET_FORMATIONS_SUCCESS,
+        payload: {
+          formations,
+          totalFormations,
+          numOfPages,
+        },
+      })
     } catch (error) {
-        logoutUser()
+      logoutUser()
     }
     clearAlert()
-}
-
-
-const getAttestations = async (startDate, endDate) => {
-  let url = `api/attestations`;
-
-  // If startDate and endDate are provided, append them to the URL.
-  if (startDate && endDate) {
-      url += `?startDate=${startDate}&endDate=${endDate}`;
   }
 
-  dispatch({ type: GET_ATTESTATIONS_BEGIN });
+  const getAttestations = async (startDate, endDate) => {
+    let url = `api/attestations`
+
+    // If startDate and endDate are provided, append them to the URL.
+    if (startDate && endDate) {
+      url += `?startDate=${startDate}&endDate=${endDate}`
+    }
+
+    dispatch({ type: GET_ATTESTATIONS_BEGIN })
     try {
-        const { data } = await authFetch.get(url);
+      const { data } = await authFetch.get(url)
 
-        const { attestations, totalItems, pagesCount } = data;
+      const { attestations, totalItems, pagesCount } = data
 
-        const totalAttestations = totalItems;
-        const numOfPages = pagesCount;
+      const totalAttestations = totalItems
+      const numOfPages = pagesCount
 
-        dispatch({
-            type: GET_ATTESTATIONS_SUCCESS,
-            payload: {
-                attestations,
-                totalAttestations,
-                numOfPages,
-            },
-        });
+      dispatch({
+        type: GET_ATTESTATIONS_SUCCESS,
+        payload: {
+          attestations,
+          totalAttestations,
+          numOfPages,
+        },
+      })
     } catch (error) {
       // logoutUser()
     }
-    clearAlert();
+    clearAlert()
   }
 
   const getModules = async () => {

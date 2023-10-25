@@ -11,18 +11,10 @@ const HeaderProfile = () => {
   } = useContext(DigiContext)
   const profileDropdownRef = useRef(null)
 
-  let { user,logoutUser } = useAppContext()
-
-  useEffect(() => {
-    if(!user){
-      user = localStorage.getItem('user')
-      console.log(user);
-   
-   }},[]);
+  const { user, logoutUser } = useAppContext()
 
   // Effect to add event listener when the component mounts
   useEffect(() => {
-
     const handleClickOutside = (event) => {
       if (
         profileDropdownRef.current &&
@@ -56,7 +48,7 @@ const HeaderProfile = () => {
         >
           <img src='assets/images/admin.png' alt='image' />
         </button>
-        {isProfileSidebarOpen.dropdown && (
+        {isProfileSidebarOpen.dropdown ? (
           <ul
             className={`dropdown-menu ${
               isProfileSidebarOpen.dropdown ? 'show' : ''
@@ -68,67 +60,11 @@ const HeaderProfile = () => {
                 <p className='mb-0'>{user.username}</p>
                 <span className='d-block'>{user.email}</span>
                 <div className='d-flex justify-content-center'>
-                  {/* <div className='form-check pt-3'>
-                    <input
-                      className='form-check-input'
-                      type='checkbox'
-                      id='seeProfileAsSidebar'
-                      checked={isProfileSidebarOpen.sidebar}
-                      onChange={handleProfileSidebarCheckboxChange}
-                    />
-                    <label
-                      className='form-check-label'
-                      htmlFor='seeProfileAsSidebar'
-                    >
-                      See as sidebar
-                    </label>
-                  </div> */}
+                  {/* ... your other code ... */}
                 </div>
               </div>
             </li>
-            {/* <li>
-              <Link className='dropdown-item' to='/profile'>
-                <span className='dropdown-icon'>
-                  <i className='fa-regular fa-circle-user'></i>
-                </span>{' '}
-                Profile
-              </Link>
-            </li>
-            <li>
-              <Link className='dropdown-item' to='/chat'>
-                <span className='dropdown-icon'>
-                  <i className='fa-regular fa-message-lines'></i>
-                </span>{' '}
-                Message
-              </Link>
-            </li>
-            <li>
-              <Link className='dropdown-item' to='/task'>
-                <span className='dropdown-icon'>
-                  <i className='fa-regular fa-calendar-check'></i>
-                </span>{' '}
-                Attestationsboard
-              </Link>
-            </li>
-            <li>
-              <Link className='dropdown-item' to='#'>
-                <span className='dropdown-icon'>
-                  <i className='fa-regular fa-circle-question'></i>
-                </span>{' '}
-                Help
-              </Link>
-            </li>
-            <li>
-              <hr className='dropdown-divider' />
-            </li>
-            <li>
-              <Link className='dropdown-item' to='/editProfile'>
-                <span className='dropdown-icon'>
-                  <i className='fa-regular fa-gear'></i>
-                </span>{' '}
-                Settings
-              </Link>
-            </li> */}
+            {/* ... your other list items ... */}
             <li>
               <Link className='dropdown-item' onClick={logoutUser}>
                 <span className='dropdown-icon'>
@@ -138,7 +74,7 @@ const HeaderProfile = () => {
               </Link>
             </li>
           </ul>
-        )}
+        ) : null}
       </div>
     </div>
   )
