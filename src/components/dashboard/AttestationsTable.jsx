@@ -25,7 +25,8 @@ const AttestationsTable = () => {
           
       })
      
-        break;}}
+        break;
+     }}
 
 const { authFetch, attestations, getAttestations } = useAppContext();
 const [selectedAttestations, setSelectedAttestations] = useState([]);
@@ -60,12 +61,13 @@ const handleExportSelected = async () => {
             const data = response.data;
             // Supposons que le serveur renvoie un chemin de fichier comme "C:\\Users\\...\\fichier.zip"
             // Extraire le nom du fichier du chemin complet
-            const fileName = data.lien;
+            const cleanedPath = data.lien.replace("BCE-back/public", "");
+            const fileName = cleanedPath.split("\\").pop();
             // Construire l'URL pour déclencher le téléchargement
-            const downloadUrl = `/api/download/${fileName}`;
+            const downloadUrl = `http://127.0.0.1:8000/${fileName}`;
             // Rediriger vers cette URL pour initier le téléchargement
-            window.location = fileName.DownloadLink.slice(9);
-
+            window.location = downloadUrl;
+            handleButton2Click('saPosition');
       
         } else {
             // Handle errors
@@ -170,6 +172,7 @@ const handleExportSelected = async () => {
                     <div className="col-xl-10 col-md-10 col-10 col-xs-12">
                     <Form onSubmit={handleSubmit}>
                         <div className="row g-3">
+                            
                             <div className="col-md-4">
                                 <Form.Label htmlFor="startDate">Date Start</Form.Label>
                                 <Form.Control 
@@ -188,7 +191,7 @@ const handleExportSelected = async () => {
                                     onChange={handleEndDateChange}
                                 />
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-2">
                                 <br />
                                 <button type="submit" className="btn btn-sm btn-primary">
                                     <i className="fas fa-filter"></i> Filter
@@ -198,7 +201,8 @@ const handleExportSelected = async () => {
                         </Form>
                     </div>
                     <div className="col-xl-2 col-md-2 col-2 col-xs-12 d-flex justify-content-end align-items-center">
-                    <button onClick={handleExportSelected} className="btn btn-sm btn-danger">Exporter en ZIP </button>
+                      
+                    <button onClick={handleExportSelected} className="btn btn-sm btn-danger"> <i className="fa-duotone fa-folder-open"></i> Exporter en ZIP </button>
                         
                     </div>
                 </div>

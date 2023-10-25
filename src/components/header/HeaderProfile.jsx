@@ -11,12 +11,18 @@ const HeaderProfile = () => {
   } = useContext(DigiContext)
   const profileDropdownRef = useRef(null)
 
-  const { user } = useAppContext()
+  let { user,logoutUser } = useAppContext()
 
-  const { logoutUser } = useAppContext()
+  useEffect(() => {
+    if(!user){
+      user = localStorage.getItem('user')
+      console.log(user);
+   
+   }},[]);
 
   // Effect to add event listener when the component mounts
   useEffect(() => {
+
     const handleClickOutside = (event) => {
       if (
         profileDropdownRef.current &&

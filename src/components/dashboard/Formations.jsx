@@ -13,7 +13,6 @@ const Formations = () => {
     numOfPages = 0,
     page = 1,
     deleteFormation,
-    prepareEditFormation,
   } = useAppContext()
 
   const { handleShow } = useContext(DigiContext)
@@ -110,6 +109,14 @@ const Formations = () => {
         </Link>
         <span>
             <Link className='btn btn-primary current'>{page}</Link>
+        </span>
+        <span>
+            <Link className='btn btn-primary' onClick={() => {
+                if (page < numOfPages) {
+                    getFormations(page + 1);
+                }
+            }}
+        >{page+1}</Link>
         </span>
         <Link 
             className={`btn btn-primary next ${page === numOfPages ? 'disabled' : ''}`} 
