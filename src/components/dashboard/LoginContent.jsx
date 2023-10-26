@@ -37,13 +37,7 @@ const LoginContent3 = () => {
       endPoint: 'login',
       alertText: 'Login Successful! Redirecting...',
     })
-    // }  else {
-    //  setupUser({
-    //    currentUser,
-    //    endPoint: 'register',
-    //    alertText: 'User Created! Redirecting...',
-    //  })
-    //}
+ 
   }
   useEffect(() => {
     if (user) {
@@ -75,9 +69,25 @@ const LoginContent3 = () => {
             </div>
             <div className='bottom'>
               <h3 className='panel-title'>Login</h3>
+              <div className="login-status">
               {showAlert && (
-                <ErrorMessage varient={alertType} message={alertText} />
-              )}
+                <>
+                  {alertType === 'success' && (
+                      <div className="msg-success alert alert-success py-2 px-3 rounded mb-20 fs-14">
+                          <i className="fa-regular fa-check me-2"></i>
+                          {alertText}
+                      </div>
+                  )}
+                  {alertType === 'danger' && (
+                      <div className="msg-error alert alert-danger py-2 px-3 rounded mb-20 fs-14">
+                          <i className="fa-regular fa-circle-exclamation me-2"></i>
+                          {alertText}
+                      </div>
+                    )}
+                </>
+            )}
+          </div>
+             
               <form onSubmit={onSubmit}>
                 <div className='input-group mb-25'>
                   <span className='input-group-text'>
@@ -112,38 +122,12 @@ const LoginContent3 = () => {
                     <i className='fa-duotone fa-eye'></i>
                   </Link>
                 </div>
-                {/* <div className='d-flex justify-content-between mb-25'>
-                  <div className='form-check'>
-                    <input
-                      className='form-check-input'
-                      type='checkbox'
-                      value=''
-                      id='loginCheckbox'
-                    />
-                    <label
-                      className='form-check-label text-white'
-                      for='loginCheckbox'
-                    >
-                      Remember Me
-                    </label>
-                  </div>
-                  <Link to='/resetPassword' className='text-white fs-14'>
-                    Forgot Password?
-                  </Link>
-                </div> */}
+          
                 <button className='btn btn-primary w-100 login-btn'>
                   Sign in
                 </button>
               </form>
-              {/* <div className="other-option">
-                        <p>Or continue with</p>
-                        <div className="social-box d-flex justify-content-center gap-20">
-                            <Link to="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                            <Link to="#"><i className="fa-brands fa-twitter"></i></Link>
-                            <Link to="#"><i className="fa-brands fa-google"></i></Link>
-                            <Link to="#"><i className="fa-brands fa-instagram"></i></Link>
-                        </div>
-                    </div> */}
+        
             </div>
           </div>
         </div>

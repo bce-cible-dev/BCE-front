@@ -111,11 +111,14 @@ const AppProvider = ({ children }) => {
         payload: { user, alertText },
       })
     } catch (error) {
+      if (error.response && error.response.status !== 200) {
+        // Si le statut de la réponse n'est pas 200, vous pouvez afficher votre alerte ici.
+        displayAlert();
+      }
       dispatch({
         type: SETUP_USER_ERROR,
-        payload: { msg: error.response },
-        // payload: { msg: error.response.data.msg },
-      })
+        payload: { msg: error.response ? error.response.data.msg : "Error" },
+      });
     }
     clearAlert()
   }

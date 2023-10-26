@@ -10,6 +10,7 @@ import axios from 'axios';
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
 const baseUrl =config.BASE_URL
+const path_ignore =config.PATH_IGNORE
   const handleButton2Click = (alertType) => {
     switch (alertType) {
       case 'saPosition':
@@ -63,7 +64,7 @@ const handleExportSelected = async () => {
             const data = response.data;
             // Supposons que le serveur renvoie un chemin de fichier comme "C:\\Users\\...\\fichier.zip"
             // Extraire le nom du fichier du chemin complet
-            const cleanedPath = data.lien.replace("BCE-back/public", "");
+            const cleanedPath = data.lien.replace(path_ignore, "");
             const fileName = cleanedPath.split("\\").pop();
             // Construire l'URL pour déclencher le téléchargement
             const downloadUrl =` ${baseUrl}/${fileName}`;

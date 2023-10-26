@@ -61,7 +61,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: 'danger',
-        alertText: action.payload.msg,
+        alertText: ' Invalid Username/Password !',
       }
 
     case LOGOUT_USER:
