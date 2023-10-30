@@ -59,18 +59,23 @@ const FileInputSectionFormation = () => {
 
   useEffect(() => {
     if (isUploading) {
-      const progressBarTimeout = setTimeout(() => {
-        setIsUploading(false);
-        
-        handleButtonClick('saPosition');
-      window.location.reload( );
-      }, 3000)
-
-      return () => {
-        clearTimeout(progressBarTimeout)
+      try {
+        const progressBarTimeout = setTimeout(() => {
+          setIsUploading(false);
+          
+          handleButtonClick('saPosition');
+          // window.location.reload();
+        }, 3000);
+  
+        return () => {
+          clearTimeout(progressBarTimeout);
+        };
+      } catch (error) {
+        console.error("Une erreur s'est produite :", error);
+        // Vous pouvez également définir un état pour gérer l'affichage d'une erreur à l'utilisateur si nécessaire
       }
     }
-  }, [isUploading])
+  }, [isUploading]);
 
   return (
     <div className='panel mb-30'>
