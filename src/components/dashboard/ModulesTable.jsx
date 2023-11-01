@@ -32,9 +32,8 @@ const ModulesTable = () => {
                  
                     <th>Title Module</th>
                     <th>credit</th>
-                    <th>BCE credit</th>
-                    <th>Re-certif</th>
-                    <th>BCE re-cer</th>
+               
+              
                 
                     <th>Action</th>
                 </tr>
@@ -45,19 +44,15 @@ const ModulesTable = () => {
                     id,
                     title,
                    credit,
-                   bceCredit,
-                   reCert,
-                   bceRecert
+                  
                    
                   
                   }) => ( 
                     <tr key={id}>
                      <td>{id}</td>
-                      <td>{title.length > 50 ? title.slice(0, 45) + '...' : title}</td>
+                      <td>{title.length > 120 ? title.slice(0,117) + '...' : title}</td>
                       <td>{credit}</td>
-                      <td>{bceCredit}</td>
-                      <td>{reCert}</td>
-                      <td>{bceRecert}</td>
+                   
                    
                 <td>
                 <div className="btn-box">
@@ -67,6 +62,7 @@ const ModulesTable = () => {
                   
                     data-bs-toggle="modal"
                     data-bs-target="#editModulesModal"
+                    disabled
                     >
                         
                     <i className="fa-light fa-trash"></i>

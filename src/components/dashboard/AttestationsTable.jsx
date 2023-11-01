@@ -6,9 +6,12 @@ import withReactContent from 'sweetalert2-react-content'
 import { useAppContext } from '../../context/appContext'
 import Form from 'react-bootstrap/Form';
 import config from'../../config'
+import moment from 'moment';
 import axios from 'axios';
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
+    const now = moment();
+ const formattedDate = now.format('YYYY-MM-DD');
 const baseUrl =config.BASE_URL
 const path_ignore =config.PATH_IGNORE
   const handleButton2Click = (alertType) => {
@@ -113,9 +116,18 @@ const handleExportSelected = async () => {
       }
     };
 
-    function formatDateToInputValue(isoDateString) {
-      return isoDateString.split("T")[0];
-    }
+    const formatDateToInputValue = (dateString) => {
+        const date = new Date(dateString + 'T00:00:00Z');
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
     // Start Edit Function date
     const handleDateChange = (e, id) => {
       const dateValue = e.target.value;
@@ -156,10 +168,6 @@ const handleExportSelected = async () => {
 
   //End Edit date
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-}
     
     useEffect(() => {
         getAttestations()
@@ -262,18 +270,19 @@ const handleExportSelected = async () => {
                        <td>{credit}</td>
                        <td>
                         {editingRowId === id ? (
-                            <input type="date"  value={editedDate}  onChange={(e) => handleDateChange(e, id)}/> 
+                            <input type="date" value={editedDate} onChange={(e) => handleDateChange(e, id)}/> 
                         ) : (
                             formatDate(dateFormations)
                         )}
-                    </td> 
-                      <td>
-                        {etat}
-                      {etat == 1 ?
-                      <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer' >   <img src="assets/images/pdf.png" className="file-icon" alt="Image" /></a>
-                
-                        : 
-                        <i 
+                    </td>  
+                    <td>
+                     {etat}
+                    {etat == 1 ?
+                    <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer'>   
+                        <img src="assets/images/pdf.png" className="file-icon" alt="Image" />
+                    </a>
+                    : 
+                    <i 
                         className="fa-light fa-edit" 
                         onClick={() => {
                             const formattedDate = formatDateToInputValue(dateFormations);
@@ -282,8 +291,8 @@ const handleExportSelected = async () => {
                         }}
                         style={{ cursor: 'pointer', marginRight: '10px' }}
                     ></i>
-                         }
-                        </td>
+                    }
+                </td>
                 <td>
                 <div className="btn-box">
                 {etat == 1 ? 

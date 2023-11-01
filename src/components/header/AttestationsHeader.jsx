@@ -92,10 +92,10 @@ const AttestationsHeader = () => {
         >
           <i className='fa-light fa-arrows-rotate'></i>
         </button>
-    
+{/*     
         <button className='btn btn-sm btn-primary' onClick={createAttestations}>
       <i className='fa-light fa-plus'></i> Creer les attestations
-    </button>
+    </button> */}
       </div>
     </div>
   )

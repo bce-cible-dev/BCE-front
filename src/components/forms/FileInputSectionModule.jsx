@@ -29,49 +29,75 @@ const FileInputSectionFormation = () => {
           
       })
      
-        break;}}
+        break;
+        case 'saError':
+          MySwal.fire({
+            title: "Oops...",
+            text: "Something went wrong!",
+            icon: "error",
+            confirmButtonClass: "btn btn-sm btn-primary",
+            buttonsStyling: !1,
+            
+            showCloseButton: !0,
+            closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+            customClass: {
+                closeButton: 'btn btn-sm btn-icon btn-danger',
+            },
+        })
+          break;}}
+          const handleUpload = async () => {
+            if (!file) {
+              console.log('No file selected');
+              return;
+            }
+        
+            const fd = new FormData();
+            fd.append('excel_import[excelFile]', file);
+        
+            setIsUploading(true);
+        
+            try {
+              const response = await authFetch.post('/api/module/excel/import', fd, {
+                onUploadProgress: (progressEvent) => {
+                  const completedPercentage = Math.round(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                  );
+                  setProgress(completedPercentage);
+                },
+              });
+        
+              // Reset the file input
+              const fileInput = document.querySelector('input[type="file"]');
+              if (fileInput) {
+                fileInput.value = '';
+              }
+        
+              if (response.status === 200) {
+                handleButtonClick('saPosition');
+                window.location.reload( );
+                console.log('Success:', response.data.message);
+                // Consider showing a success message to the user
+              } else if (response.status === 400) {
+                console.log('Error 400:', response.data.message);
+                // Consider showing a user-friendly error message
+              }
+            } catch (err) {
+              handleButtonClick('saError');
+              console.error('Upload failed:', err.response ? err.response.data : err.message);
+              // Consider showing a user-friendly error message
+            } finally {
+              setIsUploading(false);
+            }
+        };
 
         
-  const handleUpload = async () => {
-    if (!file) {
-      console.log('No file selected')
-      return
-    }
-
-    const fd = new FormData()
-    fd.append('excel_import[excelFile]', file)
-
-    setIsUploading(true)
-
-  await authFetch.post('/api/module/excel/import', fd, {
-        onUploadProgress: (progressEvent) => {
-          const completedPercentage = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          )
-          setProgress(completedPercentage)
-        },
-      })
-      .then((res) => {
-        const fileInput = document.querySelector('input[type="file"]')
-        if (fileInput) {
-          fileInput.value = ''
-        }
-        console.log(res.data.message);
-       
-      })
-      .catch((err) => console.log(err))
-  }
+  
 
   useEffect(() => {
     if (isUploading) {
       const progressBarTimeout = setTimeout(() => {
         setIsUploading(false);
-        handleButtonClick('saPosition');
-       window.location.reload( );
        
-       
-       
-     
       }, 5000)
 
       return () => {

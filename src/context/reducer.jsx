@@ -21,6 +21,8 @@ import {
   GET_DOCUMENTS_SUCCESS,
   GET_ETUDIANTS_BEGIN,
   GET_ETUDIANTS_SUCCESS,
+  GET_CLIENTS_BEGIN,
+  GET_CLIENTS_SUCCESS,
 } from './actions'
 import { initialState } from './appContext'
 
@@ -98,7 +100,22 @@ const reducer = (state, action) => {
         numOfPages: action.payload.numOfPages,
         totalFormations: action.payload.totalFormations,
       }
-
+    //client get
+    case GET_CLIENTS_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        showAlert: false,
+      }
+    
+    case GET_CLIENTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        clients: action.payload.clients,
+        numOfPages: action.payload.numberOfPages,
+        totalClients: action.payload.totalClients,
+      }
     //get Attestations
     case GET_ATTESTATIONS_BEGIN:
       return {

@@ -1,157 +1,98 @@
 import { useContext, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { DigiContext } from '../../context/DigiContext';
+import { useAppContext } from '../../context/appContext';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+
 
 const ModulesHeader = () => {
-  const { headerBtnOpen, handleHeaderBtn, handleHeaderReset,headerRef } = useContext(DigiContext);
-
-  const [checkboxes, setCheckboxes] = useState({
-    showAction: true,
-    showName: true,
-    showAddress: true,
-    showPhone: true,
-    showEmail: true,
-    showCompany: true,
-    showDescription: true,
-  });
-
-  const handleChange = (e) => {
-    const { id } = e.target;
-    setCheckboxes((prevCheckboxes) => ({
-      ...prevCheckboxes,
-      [id]: !prevCheckboxes[id],
-    }));
-  };
+  const {authFetch} = useAppContext();
+  const MySwal = withReactContent(Swal)
+const handleButtonClick = (alertType) => {
+  switch (alertType) {
+    case 'saError':
+      MySwal.fire({
+        title: "Oops...",
+        text: "Something went wrong!",
+        icon: "error",
+        confirmButtonClass: "btn btn-sm btn-primary",
+        buttonsStyling: !1,
+        
+        showCloseButton: !0,
+        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        customClass: {
+            closeButton: 'btn btn-sm btn-icon btn-danger',
+        },
+    })
+      break;
+      case 'saPosition':
+        MySwal.fire({
+          position: "center",
+          icon: "success",
+          title: "Supprimé avec succès",
+          showConfirmButton: !1,
+          timer: 8000,
+          showCloseButton: !0,
+          closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+          customClass: {
+              closeButton: 'btn btn-sm btn-icon btn-danger',
+          },
+          
+      })
+     
+        break;
+      case 'saWarning':
+        MySwal.fire({
+          title: "Es-tu sûr?",
+          text: "Vous ne pourrez pas revenir en arrière !!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn btn-sm btn-danger",
+          cancelButtonClass: "btn btn-sm btn-info",
+          confirmButtonText: "Oui, supprimez-le !",
+          buttonsStyling: false,
+          showCloseButton: true,
+          closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+          customClass: {
+            closeButton: 'btn btn-sm btn-icon btn-danger',
+          },
+        }).then(async function(t) { // Notice the async keyword here
+          if (t.value) {
+            await clearAll(); // Wait for the clearAll function to complete
+         
+            
+          }
+        })
+        break;
+   }
+    }
+const clearAll = async () => {
+  try {
+    const response = await authFetch.post(`/api/clear/module`);
+    
+    if (response.status === 200) {
+        const data = response.data;
+        handleButtonClick('saPosition');
+        window.location.reload( );
+        console.log(data); // Handle the received data or other logic.
+    } else {
+        console.error("Erreur lors de la création des attestations:", response.data);
+    }
+} catch (error) {
+  handleButtonClick('saError');
+    console.error("Erreur lors de l'appel à l'API:", error.response ? error.response.data : error.message);
+}
+};
 
   return (
     <div className="panel-header">
       <h5>Modules</h5>
       <div className="btn-box d-flex gap-2">
-        <div id="tableSearch">
-          <Form.Control type="text" placeholder="Search..." />
-        </div>
-        <button className="btn btn-sm btn-icon btn-outline-primary" onClick={handleHeaderReset}>
-          <i className="fa-light fa-arrows-rotate"></i>
-        </button>
-        <div className="digi-dropdown dropdown" ref={headerRef}>
-          <button
-            className={`btn btn-sm btn-icon btn-outline-primary ${headerBtnOpen ? 'show' : ''}`}
-            onClick={handleHeaderBtn}
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="outside"
-            aria-expanded="false"
-          >
-            <i className="fa-regular fa-ellipsis-vertical"></i>
-          </button>
-          <ul className={`digi-dropdown-menu dropdown-menu ${headerBtnOpen ? 'show' : ''}`}>
-            <li className="dropdown-title">Show Table Title</li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showAction"
-                  checked={checkboxes.showAction}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showAction">
-                  Action
-                </label>
-              </div>
-            </li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showName"
-                  checked={checkboxes.showName}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showName">
-                  Name
-                </label>
-              </div>
-            </li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showAddress"
-                  checked={checkboxes.showAddress}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showAddress">
-                  Address
-                </label>
-              </div>
-            </li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showPhone"
-                  checked={checkboxes.showPhone}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showPhone">
-                  Phone
-                </label>
-              </div>
-            </li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showEmail"
-                  checked={checkboxes.showEmail}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showEmail">
-                  Email
-                </label>
-              </div>
-            </li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showCompany"
-                  checked={checkboxes.showCompany}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showCompany">
-                  Company
-                </label>
-              </div>
-            </li>
-            <li>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="showDescription"
-                  checked={checkboxes.showDescription}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="showDescription">
-                  Description
-                </label>
-              </div>
-            </li>
-            <li className="dropdown-title pb-1">Showing</li>
-            <li>
-              <div className="input-group">
-                <input type="number" className="form-control form-control-sm w-50" value="10" readOnly/>
-                <button className="btn btn-sm btn-primary w-50">Apply</button>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <button className='btn btn-sm btn-danger'   onClick={() => handleButtonClick('saWarning')}>
+                <i className='fa-light fa-trash me-2'></i>
+                Supprimer tous les modules
+              </button>
       </div>
     </div>
   );

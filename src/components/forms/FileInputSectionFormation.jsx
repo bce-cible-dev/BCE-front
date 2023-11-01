@@ -27,55 +27,81 @@ const FileInputSectionFormation = () => {
           
       })
      
+        break;
+        case 'saError':
+        MySwal.fire({
+          title: "Oops...",
+          text: "Verifier  le Fichier avant de l'importer (si pas vide ou ne contient pas une colonne vide !)",
+          icon: "error",
+          confirmButtonClass: "btn btn-sm btn-primary",
+          buttonsStyling: !1,
+          
+          showCloseButton: !0,
+          closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+          customClass: {
+              closeButton: 'btn btn-sm btn-icon btn-danger',
+          },
+      })
         break;}}
-  const handleUpload = () => {
-    if (!file) {
-      console.log('No file selected')
-      return
-    }
-
-    const fd = new FormData()
-    fd.append('excel_import[excelFile]', file)
-
-    setIsUploading(true)
-
-    authFetch.post('/api/excel/import', fd, {
-        onUploadProgress: (progressEvent) => {
-          const completedPercentage = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          )
-          setProgress(completedPercentage)
-        },
-      })
-      .then((res) => {
-        const fileInput = document.querySelector('input[type="file"]')
-        if (fileInput) {
-          fileInput.value = ''
-        }
-        console.log(res.data.message)
-      })
-      .catch((err) => console.log(err))
-  }
+        const handleUpload = async () => {
+          if (!file) {
+            console.log('No file selected');
+            return;
+          }
+      
+          const fd = new FormData();
+          fd.append('excel_import[excelFile]', file);
+      
+          setIsUploading(true);
+      
+          try {
+            const response = await authFetch.post('/api/excel/import', fd, {
+              onUploadProgress: (progressEvent) => {
+                const completedPercentage = Math.round(
+                  (progressEvent.loaded * 100) / progressEvent.total
+                );
+                setProgress(completedPercentage);
+              },
+            });
+      
+            // Reset the file input
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput) {
+              fileInput.value = '';
+            }
+      
+            if (response.status === 200) {
+              handleButtonClick('saPosition');
+              window.location.reload( );
+              console.log('Success:', response.data.message);
+              // Consider showing a success message to the user
+            } else if (response.status === 400) {
+              console.log('Error 400:', response.data.message);
+              // Consider showing a user-friendly error message
+            }
+          } catch (err) {
+            handleButtonClick('saError');
+            console.error('Upload failed:', err.response ? err.response.data : err.message);
+            // Consider showing a user-friendly error message
+          } finally {
+            setIsUploading(false);
+          }
+      };
+      
 
   useEffect(() => {
     if (isUploading) {
-      try {
-        const progressBarTimeout = setTimeout(() => {
-          setIsUploading(false);
-          
-          handleButtonClick('saPosition');
-          // window.location.reload();
-        }, 3000);
-  
-        return () => {
-          clearTimeout(progressBarTimeout);
-        };
-      } catch (error) {
-        console.error("Une erreur s'est produite :", error);
-        // Vous pouvez également définir un état pour gérer l'affichage d'une erreur à l'utilisateur si nécessaire
+      const progressBarTimeout = setTimeout(() => {
+        setIsUploading(false);
+        
+       
+      }, 3000)
+
+      return () => {
+        clearTimeout(progressBarTimeout)
       }
     }
-  }, [isUploading]);
+  }, [isUploading])
 
   return (
     <div className='panel mb-30'>

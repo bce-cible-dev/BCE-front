@@ -4,7 +4,7 @@ import AttestationsTable from '../components/dashboard/AttestationsTable'
 import AddNewAttestationsModal from '../components/modal/AddNewAttestationsModal'
 import EditAttestationsModal from '../components/modal/EditAttestationsModal'
 import ViewAttestationsModal from '../components/modal/ViewAttestationsModal'
-//import AttestationsTableFilter from '../components/filter/AttestationsTableFilter'
+
 const AttestationsMainContent = () => {
   return (
     <div className='main-content'>
@@ -13,7 +13,7 @@ const AttestationsMainContent = () => {
           <div className='panel'>
             <AttestationsHeader />
             <div className='panel-body'>
-              {/* <AttestationsTableFilter /> */}
+         
             <AttestationsTable />
             </div>
           </div>

@@ -24,6 +24,8 @@ import {
   GET_DOCUMENTS_SUCCESS,
   GET_ETUDIANTS_BEGIN,
   GET_ETUDIANTS_SUCCESS,
+  GET_CLIENTS_BEGIN,
+  GET_CLIENTS_SUCCESS,
 } from './actions'
 
 const initialState = {
@@ -222,6 +224,27 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+  //get clients
+  const getClients = async () => {
+    let url = `api/clients`
+
+    dispatch({ type: GET_CLIENTS_BEGIN })
+    try {
+      const { data } = await authFetch.get(url)
+     
+      const clients = data;
+      console.log(clients);
+      dispatch({
+        type: GET_CLIENTS_SUCCESS,
+        payload: {
+          clients
+        },
+      })
+    } catch (error) {
+      // logoutUser()
+    }
+    clearAlert()
+  }
   const getModules = async () => {
     let url = `api/modules`
 
@@ -319,6 +342,7 @@ const AppProvider = ({ children }) => {
         getEtudiants,
         getModules,
         getDocuments,
+        getClients
       }}
     >
       {children}
