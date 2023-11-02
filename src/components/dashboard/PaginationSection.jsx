@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const PaginationSection = ({currentPage,totalPages,paginate,pageNumbers}) => {
   return (
     <div className="table-bottom-control">
-        <div className="dataTables_info">Showing {currentPage} to {totalPages} of {totalPages}</div>
+        <div className="dataTables_info">Page {currentPage} </div>
          <div className="dataTables_paginate paging_simple_numbers">
             <Link 
             className={`btn btn-primary previous ${currentPage === 1 ? 'disabled' : ''}`}

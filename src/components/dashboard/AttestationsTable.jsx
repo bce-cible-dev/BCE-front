@@ -7,6 +7,7 @@ import { useAppContext } from '../../context/appContext'
 import Form from 'react-bootstrap/Form';
 import config from'../../config'
 import moment from 'moment';
+import PaginationSection from './PaginationSection';
 import axios from 'axios';
 const MySwal = withReactContent(Swal)
 const AttestationsTable = () => {
@@ -84,15 +85,35 @@ const handleExportSelected = async () => {
     }
 };
 
-    const handleStartDateChange = (e) => {
-        setStartDate(e.target.value);
-        console.log('start',e.target.value);
-    };
+const handleStartDateChange = (e) => {
+    const newStartDate = e.target.value;
+    if (endDate && newStartDate > endDate) {
+        MySwal.fire({
+            title: "Attention",
+            text: "La date de début ne peut pas être supérieure à la date de fin",
+            icon: "warning",
+            confirmButtonClass: "btn btn-sm btn-primary",
+            buttonsStyling: false
+        });
+        return;
+    }
+    setStartDate(newStartDate);
+};
 
-    const handleEndDateChange = (e) => {
-        setEndDate(e.target.value);
-        console.log('end',e.target.value);
-    };
+const handleEndDateChange = (e) => {
+    const newEndDate = e.target.value;
+    if (startDate && startDate > newEndDate) {
+        MySwal.fire({
+            title: "Attention",
+            text: "La date de fin doit être supérieure à la date de début",
+            icon: "warning",
+            confirmButtonClass: "btn btn-sm btn-primary",
+            buttonsStyling: false
+        });
+        return;
+    }
+    setEndDate(newEndDate);
+};
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -125,9 +146,13 @@ const handleExportSelected = async () => {
     };
 
     const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+        const [year, month, day] = dateString.split('-').map(str => parseInt(str, 10));
+        const date = new Date(Date.UTC(year, month - 1, day));
+        const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+        return date.toLocaleDateString(undefined, options);
     };
+  
+    
     // Start Edit Function date
     const handleDateChange = (e, id) => {
       const dateValue = e.target.value;
@@ -168,10 +193,34 @@ const handleExportSelected = async () => {
 
   //End Edit date
 
+
+  ///pagination
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPerPage] = useState(12);
+  const dataList = attestations
+   // Pagination logic
+   const indexOfLastData = currentPage * dataPerPage;
+   const indexOfFirstData = indexOfLastData - dataPerPage;
+   const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
+ 
+   const paginate = (pageNumber) => {
+     setCurrentPage(pageNumber);
+   };
+ 
+   // Calculate total number of pages
+   const totalPages = Math.ceil(dataList.length / dataPerPage);
+   const pageNumbers = [];
+   for (let i = 1; i <= totalPages; i++) {
+     pageNumbers.push(i);
+   }
+
+  //end pagination
+
     
-    useEffect(() => {
-        getAttestations()
-    }, []);
+  useEffect(() => {
+    getAttestations(); // Assurez-vous que cette fonction prend en compte la pagination
+  }, [currentPage]);
 
   return (
     <>
@@ -219,7 +268,7 @@ const handleExportSelected = async () => {
                 </div>
            
         </div>
-     
+      
     
 
         <table className="table table-dashed table-hover digi-dataTable task-table table-striped" id="taskTable">
@@ -247,69 +296,55 @@ const handleExportSelected = async () => {
                 </tr>
             </thead>
             <tbody>
-{attestations.map(({ id, client, user, modules, credit, dateFormations, path, etat }) => ( 
-    <tr key={id}>
-        <td>
-            <div className="form-check">
-                <input 
-                    className="form-check-input" 
-                    type="checkbox" 
-                    checked={selectedAttestations.includes(id)}
-                    onChange={() => handleAttestationSelection(id)}
-                />
-            </div>
-        </td>
-        <td>{id}</td>
-                      <td>{client}</td>
-                      <td>{user}</td>
-                      <td>
-                        {modules.map((module, index) => (
-                          <div key={index}>{module.length > 50 ? module.slice(0, 49) + '...' : module}</div>
-                        ))}
-                    </td>
-                       <td>{credit}</td>
-                       <td>
-                        {editingRowId === id ? (
-                            <input type="date" value={editedDate} onChange={(e) => handleDateChange(e, id)}/> 
-                        ) : (
-                            formatDate(dateFormations)
-                        )}
-                    </td>  
-                    <td>
-                     {etat}
-                    {etat == 1 ?
-                    <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer'>   
-                        <img src="assets/images/pdf.png" className="file-icon" alt="Image" />
-                    </a>
-                    : 
-                    <i 
-                        className="fa-light fa-edit" 
-                        onClick={() => {
-                            const formattedDate = formatDateToInputValue(dateFormations);
-                            setEditedDate(formattedDate);
-                            setEditingRowId(editingRowId === id ? null : id);
-                        }}
-                        style={{ cursor: 'pointer', marginRight: '10px' }}
-                    ></i>
-                    }
-                </td>
-                <td>
-                <div className="btn-box">
-                {etat == 1 ? 
-                <button className="btn btn-sm btn-icon btn-default ">
-             
-                    <i className="fa-light fa-print" style={{color: 'white'}}></i> 
-                </button>:  <button 
-            className="btn btn-sm btn-icon btn-success"  onClick={() => generateAttestations(id)}
-      
-        >
+            {currentData.map(({ id, client, user, modules, credit, dateFormations, path, etat }) => ( 
+            <tr key={id}>
+            <td>
+                <div className="form-check">
+                    <input 
+                        className="form-check-input" 
+                        type="checkbox" 
+                        checked={selectedAttestations.includes(id)}
+                        onChange={() => handleAttestationSelection(id)}
+                    />
+                </div>
+            </td>
+            <td>{id}</td>
+            <td>{client}</td>
+            <td>{user}</td>
+            <td>
+            {modules.map((module, index) => (
+                <div key={index}>{module.length > 50 ? module.slice(0, 49) + '...' : module}</div>
+            ))}
+            </td>
+            <td>{credit}</td>
+            <td>
+            {editingRowId === id ? (
+                <input type="date" value={editedDate} onChange={(e) => handleDateChange(e, id)}/> 
+            ) : (
+                formatDate(dateFormations)
+            )}
+            </td>  
+            <td>
+                {etat}
+            {etat == 1 ?
+            <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer'>   
+                <img src="assets/images/pdf.png" className="file-icon" alt="Image" />
+            </a>
+            : 
+            <i className="fa-light fa-edit"  onClick={() => {
+                    const formattedDate = formatDateToInputValue(dateFormations);setEditedDate(formattedDate);
+                    setEditingRowId(editingRowId === id ? null : id);  }} style={{ cursor: 'pointer', marginRight: '10px' }} ></i> }
+             </td>
+            <td>
+            <div className="btn-box">
+            {etat == 1 ? 
+            <button className="btn btn-sm btn-icon btn-default ">
+        
+                <i className="fa-light fa-print" style={{color: 'white'}}></i> 
+            </button>:  <button className="btn btn-sm btn-icon btn-success"  onClick={() => generateAttestations(id)}>
                     <i className="fa-light fa-print" style={{color: 'white'}}></i> 
                 </button>}
-                    <button
-                    className="btn btn-sm btn-icon btn-danger"
-                  
-                    data-bs-toggle="modal"
-                    data-bs-target="#editAttestationsModal"
+                    <button className="btn btn-sm btn-icon btn-danger" disabled data-bs-toggle="modal"data-bs-target="#editAttestationsModal"
                     >
                         
                     <i className="fa-light fa-trash"></i>
@@ -327,6 +362,7 @@ const handleExportSelected = async () => {
             </tbody>
         </table>
     </OverlayScrollbarsComponent>
+    <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} pageNumbers={pageNumbers}/>
 
     </>
   )

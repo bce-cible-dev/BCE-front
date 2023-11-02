@@ -60,16 +60,36 @@ const FormationTableFilter = () => {
       })
         break;}
       }
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-   
-  };
-  console.log('start',startDate);
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  
-  };
-  console.log('enddate',endDate);
+      const handleStartDateChange = (e) => {
+        const newStartDate = e.target.value;
+        if (endDate && newStartDate > endDate) {
+            MySwal.fire({
+                title: "Attention",
+                text: "La date de début ne peut pas être supérieure à la date de fin",
+                icon: "warning",
+                confirmButtonClass: "btn btn-sm btn-primary",
+                buttonsStyling: false
+            });
+            return;
+        }
+        setStartDate(newStartDate);
+    };
+    
+    const handleEndDateChange = (e) => {
+        const newEndDate = e.target.value;
+        if (startDate && startDate > newEndDate) {
+            MySwal.fire({
+                title: "Attention",
+                text: "La date de fin doit être supérieure à la date de début",
+                icon: "warning",
+                confirmButtonClass: "btn btn-sm btn-primary",
+                buttonsStyling: false
+            });
+            return;
+        }
+        setEndDate(newEndDate);
+    };
+
 
   const handleClientChange = (e) => {
     setSelectedClient(e.target.value);

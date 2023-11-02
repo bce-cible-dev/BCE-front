@@ -97,7 +97,6 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         formations: action.payload.formations,
-        numOfPages: action.payload.numOfPages,
         totalFormations: action.payload.totalFormations,
       }
     //client get
@@ -129,7 +128,6 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         attestations: action.payload.attestations,
-        numOfPages: action.payload.numberOfPages,
         totalAttestations: action.payload.totalAttestations,
       }
 

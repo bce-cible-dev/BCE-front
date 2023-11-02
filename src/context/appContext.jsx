@@ -150,17 +150,17 @@ const AppProvider = ({ children }) => {
 
       console.log(data)
 
-      const { formations, totalItems, pagesCount } = data
+      const { formations, totalItems } = data
 
       const totalFormations = totalItems
-      const numOfPages = pagesCount
+   
 
       dispatch({
         type: GET_FORMATIONS_SUCCESS,
         payload: {
           formations,
           totalFormations,
-          numOfPages,
+       
         },
       })
     } catch (error) {
@@ -181,17 +181,17 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await authFetch.get(url)
 
-      const { attestations, totalItems, pagesCount } = data
+      const { attestations, totalItems } = data
 
       const totalAttestations = totalItems
-      const numOfPages = pagesCount
+     
 
       dispatch({
         type: GET_ATTESTATIONS_SUCCESS,
         payload: {
           attestations,
-          totalAttestations,
-          numOfPages,
+          totalAttestations
+    
         },
       })
     } catch (error) {

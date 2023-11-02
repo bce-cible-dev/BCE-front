@@ -7,35 +7,40 @@ import FormationTableFilter from '../filter/FormationTableFilter'
 import EditFormationModal from '../modal/EditFormationModal'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import PaginationSection from './PaginationSection';
 //const [page, setPage] = useState(1);
 const Formations = () => {
   const {
     authFetch,
     formations,
-    totalFormations,
     getFormations,
     getClients,
     getEtudiants,
     deleteFormation,
   } = useAppContext()
+
+  ///pagination
+
   const [currentPage, setCurrentPage] = useState(1);
-  const dataPerPage = 20;
-  const { handleShow } = useContext(DigiContext)
-  const MySwal = withReactContent(Swal)
-// pagination 
+  const [dataPerPage] = useState(25);
+  const dataList = formations
+   // Pagination logic
+   const indexOfLastData = currentPage * dataPerPage;
+   const indexOfFirstData = indexOfLastData - dataPerPage;
+   const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
+ 
+   const paginate = (pageNumber) => {
+     setCurrentPage(pageNumber);
+   };
+ 
+   // Calculate total number of pages
+   const totalPages = Math.ceil(dataList.length / dataPerPage);
+   const pageNumbers = [];
+   for (let i = 1; i <= totalPages; i++) {
+     pageNumbers.push(i);
+   }
 
-// Calculate total number of pages
-const numOfPages = Math.ceil(totalFormations / dataPerPage);
-
-// Logic for displaying current formations
-const indexOfLastFormation = currentPage * dataPerPage;
-const indexOfFirstFormation = indexOfLastFormation - dataPerPage;
-const currentFormations = formations.slice(indexOfFirstFormation, indexOfLastFormation);
-
-// Change page
-const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-//end pagination
+  //end pagination
 
 const handleButtonClick = (alertType) => {
   switch (alertType) {
@@ -93,6 +98,7 @@ const handleButtonClick = (alertType) => {
           }
         })
         break;
+        
    }
     }
 const clearAll = async () => {
@@ -155,7 +161,7 @@ const clearAll = async () => {
                 </tr>
               </thead>
               <tbody>
-                {formations.map(
+                {currentData.map(
                   ({
                     id,
                     client,
@@ -202,35 +208,7 @@ const clearAll = async () => {
               </tbody>
             </table>
           </OverlayScrollbarsComponent>
-          <div className='table-bottom-control'>
-      <div className='dataTables_info'>
-          Page {currentPage} of {numOfPages}
-      </div>
-      <div className='dataTables_paginate paging_simple_numbers'>
-          <Link 
-              className={`btn btn-primary previous ${currentPage === 1 ? 'disabled' : ''}`} 
-              onClick={() => paginate(currentPage - 1)}
-          >
-              <i className='fa-light fa-angle-left'></i>
-          </Link>
-          {/* Map through page numbers and render page buttons */}
-          {Array.from({ length: numOfPages }, (_, i) => (
-            <Link 
-              key={i + 1}
-              className={`btn btn-primary ${currentPage === i + 1 ? 'current' : ''}`}
-              onClick={() => paginate(i + 1)}
-            >
-              {i + 1}
-            </Link>
-          ))}
-          <Link 
-              className={`btn btn-primary next ${currentPage === numOfPages ? 'disabled' : ''}`} 
-              onClick={() => paginate(currentPage + 1)}
-          >
-              <i className='fa-light fa-angle-right'></i>
-          </Link>
-      </div>
-    </div>
+          <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} pageNumbers={pageNumbers}/>
 
         </div>
       </div>
