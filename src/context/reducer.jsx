@@ -144,7 +144,6 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       modules: action.payload.modules,
-      numOfPages: action.payload.numberOfPages,
       totalModules: action.payload.totalModules,
     }
     //get Documents

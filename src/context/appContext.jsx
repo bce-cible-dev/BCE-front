@@ -252,17 +252,17 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await authFetch.get(url)
 
-      const { modules, totalItems, pagesCount } = data
+      const { modules, totalItems } = data
 
       const totalModules = totalItems
-      const numOfPages = pagesCount
+   
 
       dispatch({
         type: GET_MODULES_SUCCESS,
         payload: {
           modules,
           totalModules,
-          numOfPages,
+        
         },
       })
     } catch (error) {

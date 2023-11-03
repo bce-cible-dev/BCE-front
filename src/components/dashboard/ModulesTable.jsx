@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect ,useState} from 'react';
 //import { DigiContext } from '../../context/DigiContext';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useAppContext } from '../../context/appContext'
 import { Link } from 'react-router-dom'
-
+import PaginationSection from './PaginationSection';
 const ModulesTable = () => {
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
@@ -12,13 +12,33 @@ const ModulesTable = () => {
         const day = date.getDate().toString().padStart(2, '0');  // Ajoute un zéro devant si nécessaire
         return `${day}-${month}-${year}`;
     };
-    const { modules, getModules  ,numOfPages,
-      page,} = useAppContext();
+    const { modules, getModules} = useAppContext();
 
     useEffect(() => {
         getModules()
     }, []);
+ ///pagination
 
+ const [currentPage, setCurrentPage] = useState(1);
+ const [dataPerPage] = useState(25);
+ const dataList = modules
+  // Pagination logic
+  const indexOfLastData = currentPage * dataPerPage;
+  const indexOfFirstData = indexOfLastData - dataPerPage;
+  const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(dataList.length / dataPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+ //end pagination
   return (
     <>
     <OverlayScrollbarsComponent>
@@ -40,7 +60,7 @@ const ModulesTable = () => {
                 </tr>
             </thead>
             <tbody>
-            {modules.map(
+            {currentData.map(
                   ({
                     id,
                     title,
@@ -81,36 +101,7 @@ const ModulesTable = () => {
             </tbody>
         </table>
     </OverlayScrollbarsComponent>
-    <div className='table-bottom-control'>
-            <div className='dataTables_info'>
-              Page {page} of {numOfPages}
-            </div>
-            <div className='dataTables_paginate paging_simple_numbers'>
-              <Link
-                className={`btn btn-primary previous ${page === 1 ? 'disabled' : ''}`}
-                onClick={() => {
-                  if (page > 1) {
-                    getFormations(page - 1);  // Assuming you have this function to fetch the previous page
-                  }
-                }}
-              >
-                <i className='fa-light fa-angle-left'></i>
-              </Link>
-              <span>
-                <Link className='btn btn-primary current'>{page}</Link>
-              </span>
-              <Link
-                className={`btn btn-primary next ${page === numOfPages ? 'disabled' : ''}`}
-                onClick={() => {
-                  if (page < numOfPages) {
-                    getFormations(page + 1);  // Assuming you have this function to fetch the next page
-                  }
-                }}
-              >
-                <i className='fa-light fa-angle-right'></i>
-              </Link>
-            </div>
-          </div>
+    <PaginationSection currentPage={currentPage} totalPages={totalPages} paginate={paginate} pageNumbers={pageNumbers}/>
     </>
   )
 }
