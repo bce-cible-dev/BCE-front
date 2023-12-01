@@ -28,11 +28,11 @@ const Formations = () => {
    const indexOfLastData = currentPage * dataPerPage;
    const indexOfFirstData = indexOfLastData - dataPerPage;
    const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
- 
+
    const paginate = (pageNumber) => {
      setCurrentPage(pageNumber);
    };
- 
+
    // Calculate total number of pages
    const totalPages = Math.ceil(dataList.length / dataPerPage);
    const pageNumbers = [];
@@ -51,7 +51,7 @@ const handleButtonClick = (alertType) => {
         icon: "error",
         confirmButtonClass: "btn btn-sm btn-primary",
         buttonsStyling: !1,
-        
+
         showCloseButton: !0,
         closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
         customClass: {
@@ -71,9 +71,9 @@ const handleButtonClick = (alertType) => {
           customClass: {
               closeButton: 'btn btn-sm btn-icon btn-danger',
           },
-          
+
       })
-     
+
         break;
       case 'saWarning':
         MySwal.fire({
@@ -93,18 +93,18 @@ const handleButtonClick = (alertType) => {
         }).then(async function(t) { // Notice the async keyword here
           if (t.value) {
             await clearAll(); // Wait for the clearAll function to complete
-         
-            
+
+
           }
         })
         break;
-        
+
    }
     }
 const clearAll = async () => {
   try {
     const response = await authFetch.post(`/api/clear/formations`);
-    
+
     if (response.status === 200) {
         const data = response.data;
         handleButtonClick('saPosition');
@@ -130,8 +130,8 @@ const clearAll = async () => {
       <div className='panel recent-order'>
         <div className='panel-header'>
           <h5>Formation</h5>
-          
-          <div id='tableSearch'>  
+
+          <div id='tableSearch'>
           <div className="btn-box d-flex gap-2">
         <button className='btn btn-sm btn-danger'   onClick={() => handleButtonClick('saWarning')}>
                 <i className='fa-light fa-trash me-2'></i>
@@ -141,7 +141,7 @@ const clearAll = async () => {
           <EditFormationModal />
         </div>
         <div className='panel-body'>
-        <FormationTableFilter /> 
+        <FormationTableFilter />
           <OverlayScrollbarsComponent>
             <table
               className='table table-dashed recent-order-table dataTable no-footer'
@@ -166,7 +166,7 @@ const clearAll = async () => {
                     id,
                     client,
                     etudiant,
-                   
+
 
                     module,
                     credit,
@@ -180,23 +180,11 @@ const clearAll = async () => {
                       <td>{credit}</td>
                       <td>{dateCompletion}</td>
 
-                      {/* <td>$05.22</td>
-                      <td>
-                      <span className='badge bg-success'>Paid</span>
-                      </td> */}
+
                       <td>
                         <div className='btn-box'>
-                          {/* <button>
-                            <i className='fa-light fa-eye'></i>
-                          </button> */}
-                          {/* <button
-                            onClick={() => {
-                              handleShow()
-                            }}
-                          >
-                            <i className='fa-light fa-pen'></i>
-                          </button> */}
-                          
+
+
                           <button onClick={() => deleteFormation(id)}>
                             <i className='fa-light fa-trash'></i>
                           </button>

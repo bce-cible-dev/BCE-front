@@ -30,9 +30,9 @@ const EtudiantsTable = () => {
                             <input className="form-check-input" type="checkbox" id="markAllEtudiants"/>
                         </div>
                     </th>
-                 
+
                     <th> Nom & Prénom</th>
-                
+
                     <th>Action</th>
                 </tr>
             </thead>
@@ -41,38 +41,34 @@ const EtudiantsTable = () => {
                   ({
                     id,
                     fullName,
-                   
-                  
-                  }) => ( 
+
+
+                  }) => (
                     <tr key={id}>
                     <td>
                         <div className="form-check">
-                            <input 
-                                className="form-check-input" 
-                                type="checkbox" 
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
                             />
                         </div>
                     </td>
-                    
+
                       <td>{fullName}</td>
-                    
+
                 <td>
                 <div className="btn-box">
-               
+
                     <button
                     className="btn btn-sm btn-icon btn-danger"
-                  
+
                     data-bs-toggle="modal"
                     data-bs-target="#editEtudiantsModal"
                     >
-                        
+
                     <i className="fa-light fa-trash"></i>
                     </button>
-                    {/* <button
-                    className="btn btn-sm btn-icon btn-danger"
-                    >
-                    <i className="fa-light fa-trash-can"></i>
-                    </button> */}
+
                 </div>
                 </td>
             </tr>

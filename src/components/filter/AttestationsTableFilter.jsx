@@ -29,7 +29,7 @@ const AttestationsTableFilter = () => {
                         <div className="row g-3">
                             <div className="col-md-4">
                                 <Form.Label htmlFor="startDate">Date Start</Form.Label>
-                                <Form.Control 
+                                <Form.Control
                                     type="date"
                                     id="startDate"
                                     value={startDate}
@@ -38,7 +38,7 @@ const AttestationsTableFilter = () => {
                             </div>
                             <div className="col-md-4">
                                 <Form.Label htmlFor="endDate">Date End</Form.Label>
-                                <Form.Control 
+                                <Form.Control
                                     type="date"
                                     id="endDate"
                                     value={endDate}
@@ -55,7 +55,7 @@ const AttestationsTableFilter = () => {
                     </div>
                     <div className="col-xl-2 col-md-2 col-2 col-xs-12 d-flex justify-content-end align-items-center">
                         <div id="employeeTableLength">
-                            {/* Content for employeeTableLength */}
+
                         </div>
                     </div>
                 </div>

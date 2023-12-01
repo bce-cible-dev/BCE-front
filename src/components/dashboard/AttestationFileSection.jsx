@@ -23,7 +23,7 @@ const AttestationFileSection = ({state}) => {
     }, []);
 
 
- 
+
 
 
 
@@ -47,10 +47,10 @@ const AttestationFileSection = ({state}) => {
                             <span>User</span>
                             <span>Type</span>
                             <span>Client</span>
-                         
+
                         </div>
-                        {documents && documents.map((document) => ( 
-                   
+                        {documents && documents.map((document) => (
+
                            <div className="file-manager-col" key={document.id}>
                          <div className="file-card">
                              <div className="part-img">
@@ -65,20 +65,17 @@ const AttestationFileSection = ({state}) => {
                              <div className="file-type">
                                  <span>{document.client}</span>
                              </div>
-                           
+
                          </div>
                      </div>
                     ))}
 
-                       
-                       
+
+
                     </div>
                 </div>
             </OverlayScrollbarsComponent>
-            {/* <div className="part-btn text-center">
-                <p>Showing 10 of 100 items</p>
-                <button className="btn btn-sm btn-primary">Load More</button>
-            </div> */}
+
         </div>
     </div>
   )

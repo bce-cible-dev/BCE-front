@@ -35,9 +35,9 @@ const LoginContent3 = () => {
     setupUser({
       currentUser,
       endPoint: 'login',
-      alertText: 'Login Successful! Redirecting...',
+      alertText: 'you are Loged with Successful! Redirecting...',
     })
- 
+
   }
   useEffect(() => {
     if (user) {
@@ -87,7 +87,7 @@ const LoginContent3 = () => {
                 </>
             )}
           </div>
-             
+
               <form onSubmit={onSubmit}>
                 <div className='input-group mb-25'>
                   <span className='input-group-text'>
@@ -122,12 +122,12 @@ const LoginContent3 = () => {
                     <i className='fa-duotone fa-eye'></i>
                   </Link>
                 </div>
-          
+
                 <button className='btn btn-primary w-100 login-btn'>
                   Sign in
                 </button>
               </form>
-        
+
             </div>
           </div>
         </div>

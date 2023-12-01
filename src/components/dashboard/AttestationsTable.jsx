@@ -29,9 +29,9 @@ const path_ignore =config.PATH_IGNORE
           customClass: {
               closeButton: 'btn btn-sm btn-icon btn-danger',
           },
-          
+
       })
-     
+
         break;
      }}
 
@@ -75,7 +75,7 @@ const handleExportSelected = async () => {
             // Rediriger vers cette URL pour initier le téléchargement
             window.location = downloadUrl;
             handleButton2Click('saPosition');
-      
+
         } else {
             // Handle errors
             console.error("Error exporting attestations:", response.data);
@@ -151,12 +151,12 @@ const handleEndDateChange = (e) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
         return date.toLocaleDateString(undefined, options);
     };
-  
-    
+
+
     // Start Edit Function date
     const handleDateChange = (e, id) => {
       const dateValue = e.target.value;
-      
+
       // Ensure the date format is correct
       if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
           console.error("Date format is not 'yyyy-MM-dd'");
@@ -167,24 +167,23 @@ const handleEndDateChange = (e) => {
       updateDateFormation(id, dateValue);
       console.log('test update');
   };
- 
+
   const updateDateFormation = async (id, date) => {
     console.log('date',date);
     try {
         const response = await authFetch.put(`/api/attestations/${id}`, {
-                dateFormations: date 
+                dateFormations: date
         });
 
-        
+
         if (response.status === 200) {
           const data = response.data;
           console.log('res', data);// Accessing the data directly
-            //console.log('res', data);
+
             // You can also refresh the attestations from the server if needed
             getAttestations();
         } else {
-            console.error('Error updating date formation:', response.data); // Here too
-            // Handle the error (maybe display a message to the user or something similar)
+            console.error('Error updating date formation:', response.data); 
         }
     } catch (error) {
         console.error("Error in updateDateFormation:", error);
@@ -203,11 +202,11 @@ const handleEndDateChange = (e) => {
    const indexOfLastData = currentPage * dataPerPage;
    const indexOfFirstData = indexOfLastData - dataPerPage;
    const currentData = dataList.slice(indexOfFirstData, indexOfLastData);
- 
+
    const paginate = (pageNumber) => {
      setCurrentPage(pageNumber);
    };
- 
+
    // Calculate total number of pages
    const totalPages = Math.ceil(dataList.length / dataPerPage);
    const pageNumbers = [];
@@ -217,7 +216,7 @@ const handleEndDateChange = (e) => {
 
   //end pagination
 
-    
+
   useEffect(() => {
     getAttestations(); // Assurez-vous que cette fonction prend en compte la pagination
   }, [currentPage]);
@@ -227,15 +226,15 @@ const handleEndDateChange = (e) => {
     <OverlayScrollbarsComponent>
 
     <div className="table-filter-option task-table-header">
-           
+
                 <div className="row g-3">
                     <div className="col-xl-10 col-md-10 col-10 col-xs-12">
                     <Form onSubmit={handleSubmit}>
                         <div className="row g-3">
-                            
+
                             <div className="col-md-4">
                                 <Form.Label htmlFor="startDate">Date Start</Form.Label>
-                                <Form.Control 
+                                <Form.Control
                                     type="date"
                                     id="startDate"
                                     value={startDate}
@@ -244,7 +243,7 @@ const handleEndDateChange = (e) => {
                             </div>
                             <div className="col-md-4">
                                 <Form.Label htmlFor="endDate">Date End</Form.Label>
-                                <Form.Control 
+                                <Form.Control
                                     type="date"
                                     id="endDate"
                                     value={endDate}
@@ -261,24 +260,24 @@ const handleEndDateChange = (e) => {
                         </Form>
                     </div>
                     <div className="col-xl-2 col-md-2 col-2 col-xs-12 d-flex justify-content-end align-items-center">
-                      
+
                     <button onClick={handleExportSelected} className="btn btn-sm btn-danger"> <i className="fa-duotone fa-folder-open"></i> Exporter en ZIP </button>
-                        
+
                     </div>
                 </div>
-           
+
         </div>
-      
-    
+
+
 
         <table className="table table-dashed table-hover digi-dataTable task-table table-striped" id="taskTable">
             <thead>
                 <tr>
                     <th className="no-sort">
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="checkbox" 
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
                             id="markAllModules"
                             checked={selectedAttestations.length === attestations.length}
                             onChange={handleSelectAll}
@@ -296,13 +295,13 @@ const handleEndDateChange = (e) => {
                 </tr>
             </thead>
             <tbody>
-            {currentData.map(({ id, client, user, modules, credit, dateFormations, path, etat }) => ( 
+            {currentData.map(({ id, client, user, modules, credit, dateFormations, path, etat }) => (
             <tr key={id}>
             <td>
                 <div className="form-check">
-                    <input 
-                        className="form-check-input" 
-                        type="checkbox" 
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
                         checked={selectedAttestations.includes(id)}
                         onChange={() => handleAttestationSelection(id)}
                     />
@@ -319,34 +318,34 @@ const handleEndDateChange = (e) => {
             <td>{credit}</td>
             <td>
             {editingRowId === id ? (
-                <input type="date" value={editedDate} onChange={(e) => handleDateChange(e, id)}/> 
+                <input type="date" value={editedDate} onChange={(e) => handleDateChange(e, id)}/>
             ) : (
                 formatDate(dateFormations)
             )}
-            </td>  
+            </td>
             <td>
                 {etat}
             {etat == 1 ?
-            <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer'>   
+            <a href={`${baseUrl}${path}`} target='_blank' rel='noopener noreferrer'>
                 <img src="assets/images/pdf.png" className="file-icon" alt="Image" />
             </a>
-            : 
+            :
             <i className="fa-light fa-edit"  onClick={() => {
                     const formattedDate = formatDateToInputValue(dateFormations);setEditedDate(formattedDate);
                     setEditingRowId(editingRowId === id ? null : id);  }} style={{ cursor: 'pointer', marginRight: '10px' }} ></i> }
              </td>
             <td>
             <div className="btn-box">
-            {etat == 1 ? 
+            {etat == 1 ?
             <button className="btn btn-sm btn-icon btn-default ">
-        
-                <i className="fa-light fa-print" style={{color: 'white'}}></i> 
+
+                <i className="fa-light fa-print" style={{color: 'white'}}></i>
             </button>:  <button className="btn btn-sm btn-icon btn-success"  onClick={() => generateAttestations(id)}>
-                    <i className="fa-light fa-print" style={{color: 'white'}}></i> 
+                    <i className="fa-light fa-print" style={{color: 'white'}}></i>
                 </button>}
                     <button className="btn btn-sm btn-icon btn-danger" disabled data-bs-toggle="modal"data-bs-target="#editAttestationsModal"
                     >
-                        
+
                     <i className="fa-light fa-trash"></i>
                     </button>
                     {/* <button

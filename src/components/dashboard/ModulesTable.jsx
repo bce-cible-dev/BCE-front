@@ -50,12 +50,12 @@ const ModulesTable = () => {
                             <input className="form-check-input" type="checkbox" id="markAllModules"/>
                         </div>
                     </th>
-                 
+
                     <th>Title Module</th>
                     <th>credit</th>
-               
-              
-                
+
+
+
                     <th>Action</th>
                 </tr>
             </thead>
@@ -65,34 +65,30 @@ const ModulesTable = () => {
                     id,
                     title,
                    credit,
-                  
-                   
-                  
-                  }) => ( 
+
+
+
+                  }) => (
                     <tr key={id}>
                      <td>{id}</td>
                       <td>{title.length > 120 ? title.slice(0,117) + '...' : title}</td>
                       <td>{credit}</td>
-                   
-                   
+
+
                 <td>
                 <div className="btn-box">
-               
+
                     <button
                     className="btn btn-sm btn-icon btn-danger"
-                  
+
                     data-bs-toggle="modal"
                     data-bs-target="#editModulesModal"
                     disabled
                     >
-                        
+
                     <i className="fa-light fa-trash"></i>
                     </button>
-                    {/* <button
-                    className="btn btn-sm btn-icon btn-danger"
-                    >
-                    <i className="fa-light fa-trash-can"></i>
-                    </button> */}
+
                 </div>
                 </td>
             </tr>

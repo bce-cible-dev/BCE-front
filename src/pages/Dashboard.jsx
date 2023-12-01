@@ -8,12 +8,8 @@ import FileInputSectionFormation from '../components/forms/FileInputSectionForma
 const DashboardMainContent = () => {
   return (
     <div className='main-content'>
-      {/* <DashboardBreadcrumb title={'eCommerce Dashboard'} /> */}
-  
       <FileInputSectionFormation />
-      {/* <DashboardCards /> */}
       <div className='row m'>
-     
         <Formations />
       </div>
       <Footer />
