@@ -23,11 +23,6 @@ const AttestationFileSection = ({state}) => {
     }, []);
 
 
-
-
-
-
-
   return (
     <div className="panel">
         <div className="panel-header">
@@ -69,9 +64,6 @@ const AttestationFileSection = ({state}) => {
                          </div>
                      </div>
                     ))}
-
-
-
                     </div>
                 </div>
             </OverlayScrollbarsComponent>
