@@ -1,8 +1,9 @@
-import React from 'react'
-import axios from 'axios'
-import { useState, useEffect, useReducer, useContext } from 'react'
-import reducer from './reducer'
-import config from'../config'
+// Importing necessary modules and components
+import React from 'react';
+import axios from 'axios';
+import { useState, useEffect, useReducer, useContext } from 'react';
+import reducer from './reducer';
+import config from '../config';
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -26,8 +27,9 @@ import {
   GET_ETUDIANTS_SUCCESS,
   GET_CLIENTS_BEGIN,
   GET_CLIENTS_SUCCESS,
-} from './actions'
+} from './actions';
 
+// Initial state for the context
 const initialState = {
   isLoading: false,
   showAlert: false,
@@ -42,174 +44,165 @@ const initialState = {
   page: 1,
   numOfPages: 1,
   formationToEdit: '',
-}
+};
 
-const AppContext = React.createContext()
-const baseUrl =config.BASE_URL
+// Creating a React context
+const AppContext = React.createContext();
+
+// Base URL for API requests
+const baseUrl = config.BASE_URL;
+
+// AppProvider component responsible for providing state and functions to its children
 const AppProvider = ({ children }) => {
-  const savedState = JSON.parse(localStorage.getItem('appliState'))
-  const [state, dispatch] = useReducer(reducer, savedState || initialState)
+  // Retrieving the saved state from localStorage or using the initial state
+  const savedState = JSON.parse(localStorage.getItem('appliState'));
+  const [state, dispatch] = useReducer(reducer, savedState || initialState);
 
+  // Effect to update localStorage when the state changes
   useEffect(() => {
-    localStorage.setItem('appliState', JSON.stringify(state))
-  }, [state])
+    localStorage.setItem('appliState', JSON.stringify(state));
+  }, [state]);
 
-
-  const config = {
+  // Configuration object for headers
+  const appConfig = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
       ContentType: 'application/json',
     },
-  }
-  // axios
+  };
+
+  // Creating an instance of axios with the configured headers
   const authFetch = axios.create({
     baseURL: baseUrl,
-    headers: config.headers,
-  })
+    headers: appConfig.headers,
+  });
 
-  // request
-
-  // response
-
+  // Axios interceptor for handling unauthorized access
   authFetch.interceptors.response.use(
-    (response) => {
-      return response
-    },
-    (error) => {
-      // console.log(error.response)
-      if (error.response.status === 401) {
-        logoutUser()
+      (response) => {
+        return response;
+      },
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          logoutUser();
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error)
-    }
-  )
+  );
 
+  // Function to display an alert
   const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT })
-    clearAlert()
-  }
+    dispatch({ type: DISPLAY_ALERT });
+    clearAlert();
+  };
 
+  // Function to clear the alert after a certain duration
   const clearAlert = () => {
     setTimeout(() => {
-      dispatch({ type: CLEAR_ALERT })
-    }, 3000)
-  }
+      dispatch({ type: CLEAR_ALERT });
+    }, 3000);
+  };
 
+  // Function to set up a user
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
-    dispatch({ type: SETUP_USER_BEGIN })
+    dispatch({ type: SETUP_USER_BEGIN });
     try {
-      const { data } = await axios.post(
-        `${baseUrl + '/' + endPoint}`,
-        currentUser
-      )
-      const { user, token } = data
-      localStorage.setItem('token', token)
+      const { data } = await axios.post(`${baseUrl}/${endPoint}`, currentUser);
+      const { user, token } = data;
+      localStorage.setItem('token', token);
 
-      console.log('user', user)
-      console.log('token', token)
+      console.log('user', user);
+      console.log('token', token);
 
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: { user, alertText },
-      })
+      });
     } catch (error) {
       if (error.response && error.response.status !== 200) {
-        // Si le statut de la réponse n'est pas 200, vous pouvez afficher votre alerte ici.
         displayAlert();
       }
       dispatch({
         type: SETUP_USER_ERROR,
-        payload: { msg: error.response ? error.response.data.msg : "Error" },
+        payload: { msg: error.response ? error.response.data.msg : 'Error' },
       });
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
 
+  // Function to log out a user
   const logoutUser = async () => {
-    localStorage.removeItem('token')
-    // Remove token from local storage
-    dispatch({ type: LOGOUT_USER })
-  }
+    localStorage.removeItem('token');
+    dispatch({ type: LOGOUT_USER });
+  };
 
+  // Function to handle changes in a form
   const handleChange = ({ name, value }) => {
-    dispatch({ type: HANDLE_CHANGE, payload: { name, value } })
-  }
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
+  };
+
+  // Function to clear form values
   const clearValues = () => {
-    dispatch({ type: CLEAR_VALUES })
-  }
+    dispatch({ type: CLEAR_VALUES });
+  };
 
-  //get Formations
+  // Function to get formations
   const getFormations = async (pageNumber = 1) => {
-    // Default to page 1 if no page number is provided
-
-    let url = `api/formations?page=${pageNumber}` // Add the page query parameter to the URL
-
-    dispatch({ type: GET_FORMATIONS_BEGIN })
+    let url = `api/formations?page=${pageNumber}`;
+    dispatch({ type: GET_FORMATIONS_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
-
-      console.log(data)
-
-      const { formations, totalItems } = data
-
-      const totalFormations = totalItems
-   
+      const { data } = await authFetch.get(url);
+      const { formations, totalItems } = data;
+      const totalFormations = totalItems;
 
       dispatch({
         type: GET_FORMATIONS_SUCCESS,
         payload: {
           formations,
           totalFormations,
-       
         },
-      })
+      });
     } catch (error) {
-      logoutUser()
+      logoutUser();
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
 
+  // Function to get attestations
   const getAttestations = async (startDate, endDate) => {
-    let url = `api/attestations`
-
-    // If startDate and endDate are provided, append them to the URL.
+    let url = `api/attestations`;
     if (startDate && endDate) {
-      url += `?startDate=${startDate}&endDate=${endDate}`
+      url += `?startDate=${startDate}&endDate=${endDate}`;
     }
 
-    dispatch({ type: GET_ATTESTATIONS_BEGIN })
+    dispatch({ type: GET_ATTESTATIONS_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
-
-      const { attestations, totalItems } = data
-
-      const totalAttestations = totalItems
-     
+      const { data } = await authFetch.get(url);
+      const { attestations, totalItems } = data;
+      const totalAttestations = totalItems;
 
       dispatch({
         type: GET_ATTESTATIONS_SUCCESS,
         payload: {
           attestations,
-          totalAttestations
-    
+          totalAttestations,
         },
-      })
+      });
     } catch (error) {
-      // logoutUser()
+      // Handle error
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
+
+  // Function to get etudiants
   const getEtudiants = async () => {
-    let url = `api/etudiants`
-
-    dispatch({ type: GET_ETUDIANTS_BEGIN })
+    let url = `api/etudiants`;
+    dispatch({ type: GET_ETUDIANTS_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
-
-      const { etudiants, totalItems, pagesCount } = data
-
-      const totalEtudiants = totalItems
-      const numOfPages = pagesCount
+      const { data } = await authFetch.get(url);
+      const { etudiants, totalItems, pagesCount } = data;
+      const totalEtudiants = totalItems;
+      const numOfPages = pagesCount;
 
       dispatch({
         type: GET_ETUDIANTS_SUCCESS,
@@ -218,70 +211,64 @@ const AppProvider = ({ children }) => {
           totalEtudiants,
           numOfPages,
         },
-      })
+      });
     } catch (error) {
-      // logoutUser()
+      // Handle error
     }
-    clearAlert()
-  }
-  //get clients
-  const getClients = async () => {
-    let url = `api/clients`
+    clearAlert();
+  };
 
-    dispatch({ type: GET_CLIENTS_BEGIN })
+  // Function to get clients
+  const getClients = async () => {
+    let url = `api/clients`;
+    dispatch({ type: GET_CLIENTS_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
-     
+      const { data } = await authFetch.get(url);
       const clients = data;
       console.log(clients);
       dispatch({
         type: GET_CLIENTS_SUCCESS,
         payload: {
-          clients
+          clients,
         },
-      })
+      });
     } catch (error) {
-      // logoutUser()
+      // Handle error
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
+
+  // Function to get modules
   const getModules = async () => {
-    let url = `api/modules`
-
-    dispatch({ type: GET_MODULES_BEGIN })
+    let url = `api/modules`;
+    dispatch({ type: GET_MODULES_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
-
-      const { modules, totalItems } = data
-
-      const totalModules = totalItems
-   
+      const { data } = await authFetch.get(url);
+      const { modules, totalItems } = data;
+      const totalModules = totalItems;
 
       dispatch({
         type: GET_MODULES_SUCCESS,
         payload: {
           modules,
           totalModules,
-        
         },
-      })
+      });
     } catch (error) {
-      // logoutUser()
+      // Handle error
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
 
+  // Function to get documents
   const getDocuments = async () => {
-    let url = `api/pdf/attestations`
-
-    dispatch({ type: GET_DOCUMENTS_BEGIN })
+    let url = `api/pdf/attestations`;
+    dispatch({ type: GET_DOCUMENTS_BEGIN });
     try {
-      const { data } = await authFetch.get(url)
-
-      const { documents, totalItems, pagesCount } = data
-
-      const totalDocuments = totalItems
-      const numOfPages = pagesCount
+      const { data } = await authFetch.get(url);
+      const { documents, totalItems, pagesCount } = data;
+      const totalDocuments = totalItems;
+      const numOfPages = pagesCount;
 
       dispatch({
         type: GET_DOCUMENTS_SUCCESS,
@@ -290,68 +277,77 @@ const AppProvider = ({ children }) => {
           totalDocuments,
           numOfPages,
         },
-      })
+      });
     } catch (error) {
-      // logoutUser()
+      // Handle error
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
+
+  // Function to start editing a formation
   const startEditFormation = async (id) => {
     dispatch({
       type: EDIT_FORMATION_BEGIN,
-    })
-    const data = await authFetch.get(`/api/formations/${id}`)
-    const formation = data.data
+    });
+    const data = await authFetch.get(`/api/formations/${id}`);
+    const formation = data.data;
 
     dispatch({
       type: EDIT_FORMATION_SUCCESS,
       payload: {
         formationToEdit: formation,
       },
-    })
-  }
+    });
+  };
 
+  // Function to delete a formation
   const deleteFormation = async (id) => {
-    let url = `/api/formations/${id}`
+    let url = `/api/formations/${id}`;
     dispatch({
       type: DELETE_FORMATION_BEGIN,
-    })
-    const res = await authFetch.delete(`/api/formations/${id}`)
-    console.log(res)
-    getFormations()
-    dispatch({
-      type: DELETE_FORMATION_SUCCESS,
-    })
-  }
+    });
+    try {
+      const res = await authFetch.delete(url);
+      console.log(res);
+      getFormations();
+      dispatch({
+        type: DELETE_FORMATION_SUCCESS,
+      });
+    } catch (error) {
+      // Handle error
+    }
+  };
 
+  // Providing the context values to the children components
   return (
-    <AppContext.Provider
-      value={{
-        ...state,
-        authFetch,
-        displayAlert,
-        setupUser,
-        logoutUser,
-        handleChange,
-        clearValues,
-        setupUser,
-        getFormations,
-        getAttestations,
-        startEditFormation,
-        deleteFormation,
-        getEtudiants,
-        getModules,
-        getDocuments,
-        getClients
-      }}
-    >
-      {children}
-    </AppContext.Provider>
-  )
-}
+      <AppContext.Provider
+          value={{
+            ...state,
+            authFetch,
+            displayAlert,
+            setupUser,
+            logoutUser,
+            handleChange,
+            clearValues,
+            getFormations,
+            getAttestations,
+            startEditFormation,
+            deleteFormation,
+            getEtudiants,
+            getModules,
+            getDocuments,
+            getClients,
+          }}
+      >
+        {children}
+      </AppContext.Provider>
+  );
+};
 
+// Custom hook to access the AppContext
 const useAppContext = () => {
-  return useContext(AppContext)
-}
+  return useContext(AppContext);
+};
 
-export { AppProvider, initialState, useAppContext }
+// Exporting the AppProvider and useAppContext
+export { AppProvider, initialState, useAppContext };
